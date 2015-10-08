@@ -18,25 +18,25 @@ installTestingCode(){
 	echo "................................installing moodle code......................................."
 		mkdir -p /home/$USER/Moodle_Selenium_Tests
 		BASE_TEST_DIR="/home/$USER/Moodle_Selenium_Tests/"
-		if [ ! -d /home/$USER/Moodle_Selenium_Tests/$moodleInstance_tests ]; then
-			git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git $moodleInstance_tests
+		if [ ! -d /home/$USER/Moodle_Selenium_Tests/'$moodleInstance'_tests ]; then
+			git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git '$moodleInstance'_tests
 		fi
  
-	git -C $BASE_TEST_DIR/$moodleInstance_tests pull
+	git -C $BASE_TEST_DIR/'$moodleInstance'_tests pull
 	
 }
 
 # configureMoodleTests(){
 # echo "................................configuring moodle test-properties......................................."
 # #CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://localhost/$moodleInstance|g' $BASE_TEST_DIR/$moodleInstance_tests/properties/runParameters.properties
+# sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://localhost/'$moodleInstance'|g' $BASE_TEST_DIR/'$moodleInstance'_tests/properties/runParameters.properties
 
 # }
 
 # runMoodletests(){
 # 	mkdir -p $BASE_TEST_DIR/moodle-test-reports
 # 	touch $BASE_TEST_DIR/moodle-test-reports/$MoodleVersion_test.reports
-# 	ant -Dbasedir=$BASE_TEST_DIR/$moodleInstance_tests -f $BASE_TEST_DIR/$moodleInstance_tests/build.xml 2>&1 | tee '$BASE_TEST_DIR'/moodle-test-reports/'$MoodleVersion'_test.reports
+# 	ant -Dbasedir=$BASE_TEST_DIR/$moodleInstance_tests -f $BASE_TEST_DIR/'$moodleInstance'_tests/build.xml 2>&1 | tee '$BASE_TEST_DIR'/moodle-test-reports/'$MoodleVersion'_test.reports
 # }
 
 # pushTestReportsToRemoteRepo(){
