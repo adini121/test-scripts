@@ -38,7 +38,9 @@ sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://localhost/'$moodleInstance'|
 runMoodletests(){
 	mkdir -p $BASE_TEST_DIR/moodle-test-reports
 	touch $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
-	ant -Dbasedir=$BASE_TEST_DIR/test_$moodleInstance -f $BASE_TEST_DIR/test_$moodleInstance/build.xml 2>&1 | tee $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
+	cd $BASE_TEST_DIR/test_$moodleInstance
+	ant 2>&1 | tee $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
+	#ant -Dbasedir=$BASE_TEST_DIR/test_$moodleInstance -f $BASE_TEST_DIR/test_$moodleInstance/build.xml 2>&1 | tee $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
 }
 
 pushTestReportsToRemoteRepo(){
