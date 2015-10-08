@@ -21,8 +21,9 @@ installTestingCode(){
 		if [ ! -d /home/$USER/Moodle_Selenium_Tests/'$moodleInstance'_tests ]; then
 			git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git '$moodleInstance'_tests
 		fi
- 
+ 	#pull
 	git -C $BASE_TEST_DIR/'$moodleInstance'_tests pull
+
 	
 }
 
