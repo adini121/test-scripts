@@ -18,11 +18,12 @@ installTestingCode(){
 	echo "................................installing moodle code......................................."
 		mkdir -p /home/$USER/Moodle_Selenium_Tests
 		BASE_TEST_DIR="/home/$USER/Moodle_Selenium_Tests/"
-		if [ ! -d /home/$USER/Moodle_Selenium_Tests/'$moodleInstance'_tests ]; then
-			git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git '$moodleInstance'_tests
-		fi
- 	#pull
-	git -C $BASE_TEST_DIR/'$moodleInstance'_tests pull
+		echo "moodle dir will be '$moodleInstance'_tests"
+	# 	if [ ! -d /home/$USER/Moodle_Selenium_Tests/'$moodleInstance'_tests ]; then
+	# 		git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git '$moodleInstance'_tests
+	# 	fi
+ # 	#pull
+	# git -C $BASE_TEST_DIR/'$moodleInstance'_tests pull
 
 	
 }
