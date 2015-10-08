@@ -38,12 +38,12 @@ sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://localhost/'$moodleInstance'|
 runMoodletests(){
 	mkdir -p $BASE_TEST_DIR/moodle-test-reports
 	touch $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
-	ant -Dbasedir=$BASE_TEST_DIR/$moodleInstance_tests -f $BASE_TEST_DIR/test_$moodleInstance/build.xml 2>&1 | tee '$BASE_TEST_DIR'/moodle-test-reports/test_reports_"$MoodleVersion".log
+	ant -Dbasedir=$BASE_TEST_DIR/test_$moodleInstance -f $BASE_TEST_DIR/test_$moodleInstance/build.xml 2>&1 | tee $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
 }
 
 pushTestReportsToRemoteRepo(){
 	git -C $BASE_TEST_DIR/moodle-test-reports init
-	git -C $BASE_TEST_DIR/moodle-test-reports remote set origin https://github.com/adini121/test-reports.git
+	git -C $BASE_TEST_DIR/moodle-test-reports remote add origin https://github.com/adini121/test-reports.git
 	git -C $BASE_TEST_DIR/moodle-test-reports fetch
 	git -C $BASE_TEST_DIR/moodle-test-reports pull origin moodle-test-reports
 	git -C $BASE_TEST_DIR/moodle-test-reports add .
