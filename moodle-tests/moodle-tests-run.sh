@@ -18,7 +18,7 @@ installTestingCode(){
 	echo "................................installing moodle code......................................."
 		mkdir -p /home/$USER/Moodle_Selenium_Tests
 		BASE_TEST_DIR="/home/$USER/Moodle_Selenium_Tests/"
-		echo "moodle dir will be '$moodleInstance'_tests"
+		echo "moodle dir will be test_$moodleInstance"
 	# 	if [ ! -d /home/$USER/Moodle_Selenium_Tests/'$moodleInstance'_tests ]; then
 	# 		git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git '$moodleInstance'_tests
 	# 	fi
