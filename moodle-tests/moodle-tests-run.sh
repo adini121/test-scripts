@@ -8,18 +8,17 @@
 usage(){
         echo "Usage: $0 <OPTIONS>"
         echo "Required options:"
-        echo "  -u $USER               USER name"
+        echo "  -u <USER>              User name"
         echo "  -v <MoodleVersion>     Moodle version for database and moodle home (eg 270, 281 etc)"
         echo "  -m <moodleInstance>    Eg moodle_second, moodle_third"
         exit 1
 }
 
-installMoodleCode(){
+installTestingCode(){
 	echo "................................installing moodle code......................................."
 		mkdir -p /home/$USER/moodle-selenium-tests
-		
+		BASE_TEST_DIR="/home/$USER/moodle-selenium-tests/"
 		if [ ! -d /home/$USER/moodle-selenium-tests/$moodleInstance_tests ]; then
-			BASE_TEST_DIR="/home/$USER/moodle-selenium-tests/"
 			git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git $moodleInstance_tests
 		fi
  
@@ -69,4 +68,10 @@ fi
 
 #..........................................function calls...................................
 
-installMoodleCode
+installTestingCode
+
+configureMoodleTests
+
+runMoodletests
+
+pushTestReportsToRemoteRepo
