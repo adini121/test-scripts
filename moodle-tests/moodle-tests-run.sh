@@ -42,10 +42,12 @@ runMoodletests(){
 }
 
 pushTestReportsToRemoteRepo(){
+	git config --global url."https://adini121@github.com"
 	git -C $BASE_TEST_DIR/moodle-test-reports init
-	git -C $BASE_TEST_DIR/moodle-test-reports remote add origin https://adini121:adsad1221@github.com/adini121/test-reports.git
+	git -C $BASE_TEST_DIR/moodle-test-reports config remote.origin.url https://adini121:adsad1221@github.com/adini121/test-reports.git
+	git -C $BASE_TEST_DIR/moodle-test-reports add .
+	git -C $BASE_TEST_DIR/moodle-test-reports commit -m "commit before fetch and pull for report test_reports_"$MoodleVersion".log"
 	git -C $BASE_TEST_DIR/moodle-test-reports fetch
-	git -C $BASE_TEST_DIR/moodle-test-reports checkout moodle-test-reports
 	git -C $BASE_TEST_DIR/moodle-test-reports pull origin moodle-test-reports
 	git -C $BASE_TEST_DIR/moodle-test-reports add .
 	git -C $BASE_TEST_DIR/moodle-test-reports commit -m "test report test_reports_"$MoodleVersion".log for version $MoodleVersion"
