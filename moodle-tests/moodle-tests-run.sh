@@ -19,38 +19,38 @@ installTestingCode(){
 		mkdir -p /home/$USER/Moodle_Selenium_Tests
 		BASE_TEST_DIR="/home/$USER/Moodle_Selenium_Tests/"
 		echo "moodle dir will be test_$moodleInstance"
-	# 	if [ ! -d /home/$USER/Moodle_Selenium_Tests/'$moodleInstance'_tests ]; then
-	# 		git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git '$moodleInstance'_tests
-	# 	fi
- # 	#pull
-	# git -C $BASE_TEST_DIR/'$moodleInstance'_tests pull
+		if [ ! -d /home/$USER/Moodle_Selenium_Tests/test_$moodleInstance ]; then
+			git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git test_$moodleInstance
+		fi
+ 	
+	git -C $BASE_TEST_DIR/test_$moodleInstance pull
 
 	
 }
 
-# configureMoodleTests(){
-# echo "................................configuring moodle test-properties......................................."
-# #CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://localhost/'$moodleInstance'|g' $BASE_TEST_DIR/'$moodleInstance'_tests/properties/runParameters.properties
+configureMoodleTests(){
+echo "................................configuring moodle test-properties......................................."
+#CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://localhost/'$moodleInstance'|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
 
-# }
+}
 
-# runMoodletests(){
-# 	mkdir -p $BASE_TEST_DIR/moodle-test-reports
-# 	touch $BASE_TEST_DIR/moodle-test-reports/$MoodleVersion_test.reports
-# 	ant -Dbasedir=$BASE_TEST_DIR/$moodleInstance_tests -f $BASE_TEST_DIR/'$moodleInstance'_tests/build.xml 2>&1 | tee '$BASE_TEST_DIR'/moodle-test-reports/'$MoodleVersion'_test.reports
-# }
+runMoodletests(){
+	mkdir -p $BASE_TEST_DIR/moodle-test-reports
+	touch $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
+	ant -Dbasedir=$BASE_TEST_DIR/$moodleInstance_tests -f $BASE_TEST_DIR/test_$moodleInstance/build.xml 2>&1 | tee '$BASE_TEST_DIR'/moodle-test-reports/test_reports_"$MoodleVersion".log
+}
 
-# pushTestReportsToRemoteRepo(){
-# 	git -C $BASE_TEST_DIR/moodle-test-reports init
-# 	git -C $BASE_TEST_DIR/moodle-test-reports remote set-url origin https://github.com/adini121/test-reports.git
-# 	git -C $BASE_TEST_DIR/moodle-test-reports fetch
-# 	git -C $BASE_TEST_DIR/moodle-test-reports pull origin moodle-test-reports
-# 	git -C $BASE_TEST_DIR/moodle-test-reports add .
-# 	git -C $BASE_TEST_DIR/moodle-test-reports commit -m "test report $MoodleVersion_test.reports for version $MoodleVersion"
-# 	git -C $BASE_TEST_DIR/moodle-test-reports push https://adini121:adsad1221@github.com/adini121/test-reports.git moodle-test-reports
+pushTestReportsToRemoteRepo(){
+	git -C $BASE_TEST_DIR/moodle-test-reports init
+	git -C $BASE_TEST_DIR/moodle-test-reports remote set origin https://github.com/adini121/test-reports.git
+	git -C $BASE_TEST_DIR/moodle-test-reports fetch
+	git -C $BASE_TEST_DIR/moodle-test-reports pull origin moodle-test-reports
+	git -C $BASE_TEST_DIR/moodle-test-reports add .
+	git -C $BASE_TEST_DIR/moodle-test-reports commit -m "test report test_reports_"$MoodleVersion".log for version $MoodleVersion"
+	git -C $BASE_TEST_DIR/moodle-test-reports push https://adini121:adsad1221@github.com/adini121/test-reports.git moodle-test-reports
 
-# }
+}
 
 while getopts ":u:v:m:" i; do
     case "${i}" in
@@ -72,8 +72,8 @@ fi
 
 installTestingCode
 
-# configureMoodleTests
+configureMoodleTests
 
-# runMoodletests
+runMoodletests
 
-# pushTestReportsToRemoteRepo
+pushTestReportsToRemoteRepo
