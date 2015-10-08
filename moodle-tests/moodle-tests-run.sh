@@ -12,14 +12,14 @@ usage(){
         echo "  -v <MoodleVersion>     Moodle version for database and moodle home (eg 270, 281 etc)"
         echo "  -m <moodleInstance>    Eg moodle_second, moodle_third"
         exit 1
-} moodle-selenium-tests
+} 
 
 installTestingCode(){
 	echo "................................installing moodle code......................................."
 		mkdir -p /home/$USER/Moodle_Selenium_Tests
 		BASE_TEST_DIR="/home/$USER/Moodle_Selenium_Tests/"
 		if [ ! -d /home/$USER/Moodle_Selenium_Tests/'$moodleInstance'_tests ]; then
-			git -C $BASE_TEST_DIR clone https://github.com/adini121/.git '$moodleInstance'_tests
+			git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git '$moodleInstance'_tests
 		fi
  
 	git -C $BASE_TEST_DIR/'$moodleInstance'_tests pull
