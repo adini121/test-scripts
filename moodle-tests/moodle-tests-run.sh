@@ -101,6 +101,8 @@ fi
 
 installTestingCode
 
+gatherTestReports
+
 startMoodle_SeleniumHub
 
 startMoodle_SeleniumNode
