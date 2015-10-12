@@ -14,10 +14,12 @@ usage(){
         exit 1
 } 
 
+mkdir -p /home/$USER/Moodle_Selenium_Tests
+BASE_TEST_DIR="/home/$USER/Moodle_Selenium_Tests/"
+
 installTestingCode(){
 	echo "................................installing moodle code......................................."
-		mkdir -p /home/$USER/Moodle_Selenium_Tests
-		BASE_TEST_DIR="/home/$USER/Moodle_Selenium_Tests/"
+			
 		echo "moodle dir will be test_$moodleInstance"
 		if [ ! -d /home/$USER/Moodle_Selenium_Tests/test_$moodleInstance ]; then
 			git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git test_$moodleInstance
@@ -104,16 +106,16 @@ fi
 
 #..........................................function calls...................................
 
-installTestingCode
+# installTestingCode
 
-gatherTestReports
+# gatherTestReports
 
 startMoodle_SeleniumHub
 
-startMoodle_SeleniumNode
+# startMoodle_SeleniumNode
 
-configureMoodleTests
+# configureMoodleTests
 
-runMoodletests
+# runMoodletests
 
 # pushTestReportsToRemoteRepo
