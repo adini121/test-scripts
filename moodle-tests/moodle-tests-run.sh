@@ -37,7 +37,7 @@ gatherTestReports(){
 
 startMoodle_SeleniumHub(){
 	echo "starting tmux session selenium_hub"
-	tmux new -s selenium_hub'
+	tmux new -A -s selenium_hub'
 	export DISPLAY=:0.0
 	sleep 1
 	java -jar $BASE_TEST_DIR/test_$moodleInstance/lib/selenium-2.47.1/selenium-server-standalone-2.47.1.jar -role hub -hub http://localhost:4444/grid/register
@@ -47,7 +47,7 @@ startMoodle_SeleniumHub(){
 
 startMoodle_SeleniumNode(){
 	echo "starting tmux session selenium_node"
-	tmux new -s selenium_node '
+	tmux new -A -s selenium_node '
 	export DISPLAY=:0.0
 	sleep 1
 	java -jar $BASE_TEST_DIR/test_$moodleInstance/lib/selenium-2.47.1/selenium-server-standalone-2.47.1.jar -role node -hub http://localhost:4444/grid/register 2>&1 | tee $BASE_TEST_DIR/moodle-test-reports/test_log_from_SeNode_"$MoodleVersion".log
