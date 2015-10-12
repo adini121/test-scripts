@@ -37,7 +37,7 @@ gatherTestReports(){
 
 startMoodle_SeleniumHub(){
 	echo "starting tmux session selenium-hub "
-	tmux new -A -s selenium-hub '
+	tmux new -d -A -s selenium-hub '
 	export DISPLAY=:0.0
 	sleep 3
 	/usr/bin/java -jar $BASE_TEST_DIR/test_$moodleInstance/lib/selenium-2.47.1/selenium-server-standalone-2.47.1.jar -role hub -hub http://localhost:4444/grid/register
