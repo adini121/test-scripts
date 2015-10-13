@@ -41,29 +41,31 @@ gatherTestReports(){
 	fi
 }
 
-startMoodle_SeleniumHub(){
-	echo "starting tmux session selenium-hub "
-	tmux new -d -A -s selenium-hub '
-	export DISPLAY=:0.0
-	sleep 3
-	/usr/bin/java -jar '$BASE_TEST_DIR'/test_'$moodleInstance'/lib/selenium-2.47.1/selenium-server-standalone-2.47.1.jar -role hub -hub http://localhost:4444/grid/register 2>&1 | tee '$BASE_TEST_DIR'/moodle-test-reports/Selenium-Hub-output.log
-	sleep 2
-	tmux detach'
-	# sleep 5
-	# echo "exiting tmux session selenium_hub"
-}
+# startMoodle_SeleniumHub(){
+# 	echo "starting tmux session selenium-hub "
+# 	tmux new -d -A -s selenium-hub '
+# 	export DISPLAY=:0.0
+# 	sleep 3
+# 	/usr/bin/java -jar '$BASE_TEST_DIR'/test_'$moodleInstance'/lib/selenium-2.47.1/selenium-server-standalone-2.47.1.jar -role hub -hub http://localhost:4444/grid/register 2>&1 | tee '$BASE_TEST_DIR'/moodle-test-reports/Selenium-Hub-output.log
+# 	sleep 2
+# 	tmux detach'
+# 	# sleep 5
+# 	# echo "exiting tmux session selenium_hub"
+# }
 
-startMoodle_SeleniumNode(){
-	echo "starting tmux session selenium-node"
-	tmux new -d -A -s selenium-node '
-	export DISPLAY=:0.0
-	sleep 3
-	/usr/bin/java -jar '$BASE_TEST_DIR'/test_'$moodleInstance'/lib/selenium-2.47.1/selenium-server-standalone-2.47.1.jar -role node -hub http://localhost:4444/grid/register 2>&1 | tee '$BASE_TEST_DIR'/moodle-test-reports/test_log_from_SeNode_'$MoodleVersion'.log
-	sleep 2
-	tmux detach'
-	# sleep 5
-	# echo "exiting tmux session selenium-node"
-}
+
+
+# startMoodle_SeleniumNode(){
+# 	echo "starting tmux session selenium-node"
+# 	tmux new -d -A -s selenium-node '
+# 	export DISPLAY=:0.0
+# 	sleep 3
+# 	/usr/bin/java -jar '$BASE_TEST_DIR'/test_'$moodleInstance'/lib/selenium-2.47.1/selenium-server-standalone-2.47.1.jar -role node -hub http://localhost:4444/grid/register 2>&1 | tee '$BASE_TEST_DIR'/moodle-test-reports/test_log_from_SeNode_'$MoodleVersion'.log
+# 	sleep 2
+# 	tmux detach'
+# 	# sleep 5
+# 	# echo "exiting tmux session selenium-node"
+# }
 
 configureMoodleTests(){
 echo "................................configuring moodle test-properties......................................."
@@ -117,9 +119,9 @@ installTestingCode
 
 gatherTestReports
 
-startMoodle_SeleniumHub
+# startMoodle_SeleniumHub
 
-startMoodle_SeleniumNode
+# startMoodle_SeleniumNode
 
 configureMoodleTests
 
