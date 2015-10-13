@@ -43,6 +43,7 @@ gatherTestReports(){
 
 startMoodle_SeleniumHub(){
 	echo "starting tmux session selenium-hub "
+	tmux kill-session -t selenium-hub
 	tmux new -d -A -s selenium-hub '
 	export DISPLAY=:0.0
 	sleep 3
@@ -55,6 +56,7 @@ startMoodle_SeleniumHub(){
 
 startMoodle_SeleniumNode(){
 	echo "starting tmux session selenium-node"
+	tmux kill-session -t selenium-node
 	tmux new -d -A -s selenium-node '
 	export DISPLAY=:0.0
 	sleep 3
