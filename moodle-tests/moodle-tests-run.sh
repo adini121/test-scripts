@@ -33,9 +33,12 @@ installTestingCode(){
 gatherTestReports(){
 
 	mkdir -p $BASE_TEST_DIR/moodle-test-reports
-	touch $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
-	touch $BASE_TEST_DIR/moodle-test-reports/test_log_from_SeNode_"$MoodleVersion".log
-	touch $BASE_TEST_DIR/moodle-test-reports/Selenium-Hub-output.log
+	if [ ! -f $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log ] || [ ! -f $BASE_TEST_DIR/moodle-test-reports/test_log_from_SeNode_"$MoodleVersion".log ] || [ ! -f $BASE_TEST_DIR/moodle-test-reports/Selenium-Hub-output.log ];
+		then
+			touch $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
+			touch $BASE_TEST_DIR/moodle-test-reports/test_log_from_SeNode_"$MoodleVersion".log
+			touch $BASE_TEST_DIR/moodle-test-reports/Selenium-Hub-output.log
+	fi
 }
 
 startMoodle_SeleniumHub(){
