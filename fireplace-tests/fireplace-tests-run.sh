@@ -65,12 +65,12 @@ startFireplace_SeleniumNode(){
 	# echo "exiting tmux session selenium-node-fireplace"
 }
 
-# configureFireplaceTests(){
-# echo "................................configuring Fireplace test-properties......................................."
-# CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# cp $CURRENT_DIR/credentials.yaml $FireplaceBaseDir/test_$FireplaceInstance/fireplace_credentials.yaml
+configureFireplaceTests(){
+echo "................................configuring Fireplace test-properties......................................."
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cp $CURRENT_DIR/credentials.yaml $FireplaceBaseDir/test_$FireplaceInstance/fireplace_credentials.yaml
 
-# }
+}
 
 configureVirtualenv(){
 	echo "................................configuring Fireplace Virtualenv......................................."
@@ -84,7 +84,7 @@ configureVirtualenv(){
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test --baseurl=http://localhost:$FireplacePort --browsername=firefox --credentials=$FireplaceBaseDir/test_$FireplaceInstance/credentials.yaml --platform=linux --destructive  tests/desktop/consumer_pages/ . 2>&1 | tee $FireplaceBaseDir/Fireplace-test-reports/test_reports_"$FireplaceGitTag".log
+	py.test --baseurl=http://localhost:$FireplacePort --browsername=firefox --credentials=fireplace_credentials.yaml --platform=linux --destructive  tests/desktop/consumer_pages/ . 2>&1 | tee $FireplaceBaseDir/Fireplace-test-reports/test_reports_"$FireplaceGitTag".log
 }
 
 
