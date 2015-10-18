@@ -68,6 +68,7 @@ startAMO_SeleniumNode(){
 configureAMOTests(){
 echo "................................configuring AMO test-properties......................................."
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "CURRENT_DIR="$CURRENT_DIR""
 cp $CURRENT_DIR/amo_variables.json $AMOBaseDir/test_$AMOInstance
 
 }
