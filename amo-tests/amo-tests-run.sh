@@ -118,6 +118,8 @@ startAMO_SeleniumHub
 
 startAMO_SeleniumNode
 
+configureAMOTests
+
 configureVirtualenv
 
 runAMOtests
