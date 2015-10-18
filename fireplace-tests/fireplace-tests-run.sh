@@ -84,7 +84,7 @@ configureVirtualenv(){
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test --baseurl=http://localhost:$FireplacePort --browsername=firefox --credentials=fireplace_credentials.yaml --platform=linux --destructive  tests/desktop/consumer_pages/ . 2>&1 | tee $FireplaceBaseDir/Fireplace-test-reports/test_reports_"$FireplaceGitTag".log
+	py.test --baseurl=http://localhost:$FireplacePort --browsername=firefox --credentials=fireplace_credentials.yaml --platform=linux --destructive  tests/desktop/consumer_pages/ 2>&1 | tee $FireplaceBaseDir/Fireplace-test-reports/test_reports_"$FireplaceGitTag".log
 }
 
 
