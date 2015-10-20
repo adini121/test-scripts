@@ -26,7 +26,7 @@ if [ ! -d $JENKINS_Test_DIR ]; then
 fi 
 
 if [ ! -d $JENKINS_Test_DIR/Jenkins_$Test_Instance ]; then
-    git -C $JENKINS_Test_DIR clone --recursive Jenkins_$Test_Instance
+    git -C $JENKINS_Test_DIR clone --recursive https://github.com/jenkinsci/acceptance-test-harness.git Jenkins_$Test_Instance
 fi
 
 git -C $JENKINS_Test_DIR/Jenkins_$Test_Instance pull
