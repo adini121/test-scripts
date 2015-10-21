@@ -85,7 +85,7 @@ configureVirtualenv(){
 
 runAMOtests(){
 	#export DISPLAY=:0.0
-	py.test --baseurl=http://localhost:$AMOPort --browsername=firefox --credentials=amo_variables.json --platform=linux --destructive  tests/desktop/ 2>&1 | tee $AMOBaseDir/AMO-test-reports/test_reports_"$AMOGitTag".log
+	py.test --baseurl=http://localhost:$AMOPort --browsername=firefox --variables=amo_variables.json --platform=linux --destructive tests/desktop/ 2>&1 | tee $AMOBaseDir/AMO-test-reports/test_reports_"$AMOGitTag".log
 }
 
 
