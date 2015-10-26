@@ -26,7 +26,7 @@ if [ ! -d $JENKINS_Test_DIR ]; then
 fi 
 
 if [ ! -d $JENKINS_Test_DIR/Jenkins_$Test_Instance ]; then
-    git -C $JENKINS_Test_DIR clone --recursive https://github.com/jenkinsci/acceptance-test-harness.git Jenkins_$Test_Instance
+    git -C $JENKINS_Test_DIR clone --recursive https://github.com/adini121/Jenkins-Selenium-Tests.git Jenkins_$Test_Instance
 fi
 
 git -C $JENKINS_Test_DIR/Jenkins_$Test_Instance pull
@@ -43,31 +43,31 @@ mkdir -p $JENKINS_Test_DIR/Jenkins-test-reports
 	fi
 }
 
-startJenkins_SeleniumHub(){
-echo "starting tmux session selenium-hub-Jenkins "
-tmux kill-session -t selenium-hub-Jenkins
-tmux new -d -A -s selenium-hub-Jenkins '
-export DISPLAY=:0.0
-sleep 3
-/usr/bin/java -jar /home/'$USER'/selenium-server-standalone-2.47.1.jar -role hub -hub http://localhost:4444/grid/register 2>&1 | tee '$JENKINS_Test_DIR'/Jenkins-test-reports/selenium-hub-Jenkins-output.log
-sleep 2
-tmux detach'
-# sleep 5
-# echo "exiting tmux session selenium_hub"
-}
+# startJenkins_SeleniumHub(){
+# echo "starting tmux session selenium-hub-Jenkins "
+# tmux kill-session -t selenium-hub-Jenkins
+# tmux new -d -A -s selenium-hub-Jenkins '
+# export DISPLAY=:0.0
+# sleep 3
+# /usr/bin/java -jar /home/'$USER'/selenium-server-standalone-2.47.1.jar -role hub -hub http://localhost:4444/grid/register 2>&1 | tee '$JENKINS_Test_DIR'/Jenkins-test-reports/selenium-hub-Jenkins-output.log
+# sleep 2
+# tmux detach'
+# # sleep 5
+# # echo "exiting tmux session selenium_hub"
+# }
 
-startJenkins_SeleniumNode(){
-	echo "starting tmux session selenium-node-Jenkins"
-	tmux kill-session -t selenium-node-Jenkins
-	tmux new -d -A -s selenium-node-Jenkins '
-	export DISPLAY=:0.0
-	sleep 3
-	/usr/bin/java -jar /home/'$USER'/selenium-server-standalone-2.47.1.jar -role node -hub http://localhost:4444/grid/register -browser browserName=firefox -platform platform=LINUX 2>&1 | tee '$JENKINS_Test_DIR'/Jenkins-test-reports/test_log_from_SeNode_'$JenkinsVersion'.log
-	sleep 2
-	tmux detach'
-	# sleep 5
-	# echo "exiting tmux session selenium-node-Jenkins"
-}
+# startJenkins_SeleniumNode(){
+# 	echo "starting tmux session selenium-node-Jenkins"
+# 	tmux kill-session -t selenium-node-Jenkins
+# 	tmux new -d -A -s selenium-node-Jenkins '
+# 	export DISPLAY=:0.0
+# 	sleep 3
+# 	/usr/bin/java -jar /home/'$USER'/selenium-server-standalone-2.47.1.jar -role node -hub http://localhost:4444/grid/register -browser browserName=firefox -platform platform=LINUX 2>&1 | tee '$JENKINS_Test_DIR'/Jenkins-test-reports/test_log_from_SeNode_'$JenkinsVersion'.log
+# 	sleep 2
+# 	tmux detach'
+# 	# sleep 5
+# 	# echo "exiting tmux session selenium-node-Jenkins"
+# }
 
 exportEnvironmentVariables(){
 export MAVEN_OPTS="-Xmx1024M"
@@ -78,9 +78,10 @@ export PATH=$PATH:$JAVA_HOME
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_$Test_Instance
-
-TYPE=existing JENKINS_URL=http://localhost:$startupPort/jenkins$JenkinsVersion/ mvn -DTest=CopyJobTest test 2>&1 | tee $JENKINS_Test_DIR/Jenkins-test-reports/test_reports_"$JenkinsVersion".log
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
+TYPE=existing BROWSER=infinity JENKINS_URL=http://localhost:$startupPort/jenkins$JenkinsVersion/ mvn -e -DTest=CopyJobTest test 2>&1 | tee $JENKINS_Test_DIR/Jenkins-test-reports/test_reports_"$JenkinsVersion".log
 }
+
 
 while getopts ":u:v:s:i:" i; do
         case "${i}" in
@@ -106,9 +107,9 @@ downloadJenkinsTestSuite
 
 gatherTestReports
 
-startJenkins_SeleniumHub
+# startJenkins_SeleniumHub
 
-startJenkins_SeleniumNode
+# startJenkins_SeleniumNode
 
 exportEnvironmentVariables
 
