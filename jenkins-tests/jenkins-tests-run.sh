@@ -38,7 +38,7 @@ git -C $JENKINS_Test_DIR/Jenkins_$Test_Instance pull
 
 configureTestProperties(){
 sed -i 's|.*gridHubURL=.*|gridHubURL=http://'$Grid_Address':'$Grid_Port'/wd/hub|g' $JENKINS_Test_DIR/Jenkins_$Test_Instance/src/main/resources/infinity.properties
-sed -i 's|.*browserval=.*|browserval=http:'$Browser_Name'|g' $JENKINS_Test_DIR/Jenkins_$Test_Instance/src/main/resources/infinity.properties
+sed -i 's|.*browserval=.*|browserval='$Browser_Name'|g' $JENKINS_Test_DIR/Jenkins_$Test_Instance/src/main/resources/infinity.properties
 
 }
 
