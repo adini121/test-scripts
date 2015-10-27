@@ -71,14 +71,12 @@ mkdir -p $JENKINS_Test_DIR/Jenkins-test-reports
 
 exportEnvironmentVariables(){
 export MAVEN_OPTS="-Xmx1024M"
-export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
 export PATH=$PATH:$JAVA_HOME
 }
 
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_$Test_Instance
-export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
 TYPE=existing BROWSER=infinity JENKINS_URL=http://localhost:$startupPort/jenkins$JenkinsVersion/ mvn -e -DTest=CopyJobTest test 2>&1 | tee $JENKINS_Test_DIR/Jenkins-test-reports/test_reports_"$JenkinsVersion".log
 }
 
