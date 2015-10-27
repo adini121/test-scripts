@@ -12,7 +12,7 @@ usage(){
         echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
         echo " 	-i <Test_Instance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
         echo "  -g <Grid_Address>       Selenium GRID URL Address e.g. 192.168.2.3, infinity.st.cs.uni-saarland.de"
-        echo "  -g <Grid_Port>          Selenium GRID port e.g. 4444, 6666"
+        echo "  -p <Grid_Port>          Selenium GRID port e.g. 4444, 6666"
         echo "  -b <Browser_Name>       Browser_Name e.g. firefox"
         exit 1
 }
@@ -90,7 +90,7 @@ TYPE=existing BROWSER=infinity JENKINS_URL=http://localhost:$startupPort/jenkins
 }
 
 
-while getopts ":u:v:s:i:g:" i; do
+while getopts ":u:v:s:i:g:p:b:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
