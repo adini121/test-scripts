@@ -9,7 +9,10 @@ usage(){
         echo "  -u $USER                  user name"
         echo "  -t <FireplaceGitTag>      Fireplace git tag eg: 2015.09.08 | 2015.09.15 | 2015.09.22"
         echo "  -m <FireplaceInstance>    Eg Fireplace_first, Fireplace_second"
+        echo "	-h <FireplaceHost>		  Eg localhost, 134.96.235.47, 134.96.235.134"
         echo "  -p <FireplacePort>        Eg 8088, 8089"
+        echo "  -g <Grid_Address>         Selenium GRID URL Address e.g. 192.168.2.3, infinity.st.cs.uni-saarland.de"
+        echo "  -o <Grid_Port>            Selenium GRID port e.g. 4444, 6666"
         exit 1
 }
 
@@ -39,36 +42,36 @@ mkdir -p $FireplaceBaseDir/Fireplace-test-reports
 	fi
 }
 
-startFireplace_SeleniumHub(){
-	echo "starting tmux session selenium-hub-fireplace-fireplace "
-	tmux kill-session -t selenium-hub-fireplace
-	tmux new -d -A -s selenium-hub-fireplace '
-	export DISPLAY=:0.0
-	sleep 3
-	/usr/bin/java -jar /home/'$USER'/selenium-server-standalone-2.47.1.jar -role hub -hub http://localhost:4444/grid/register 2>&1 | tee '$FireplaceBaseDir'/Fireplace-test-reports/selenium-hub-fireplace-output.log
-	sleep 2
-	tmux detach'
-	# sleep 5
-	# echo "exiting tmux session selenium_hub"
-}
+# startFireplace_SeleniumHub(){
+# 	echo "starting tmux session selenium-hub-fireplace-fireplace "
+# 	tmux kill-session -t selenium-hub-fireplace
+# 	tmux new -d -A -s selenium-hub-fireplace '
+# 	export DISPLAY=:0.0
+# 	sleep 3
+# 	/usr/bin/java -jar /home/'$USER'/selenium-server-standalone-2.47.1.jar -role hub -hub http://localhost:4444/grid/register 2>&1 | tee '$FireplaceBaseDir'/Fireplace-test-reports/selenium-hub-fireplace-output.log
+# 	sleep 2
+# 	tmux detach'
+# 	# sleep 5
+# 	# echo "exiting tmux session selenium_hub"
+# }
 
-startFireplace_SeleniumNode(){
-	echo "starting tmux session selenium-node-fireplace-fireplace"
-	tmux kill-session -t selenium-node-fireplace
-	tmux new -d -A -s selenium-node-fireplace '
-	export DISPLAY=:0.0
-	sleep 3
-	/usr/bin/java -jar /home/'$USER'/selenium-server-standalone-2.47.1.jar -role node -hub http://localhost:4444/grid/register -browser browserName=firefox -platform platform=LINUX 2>&1 | tee '$FireplaceBaseDir'/Fireplace-test-reports/test_log_from_SeNode_'$FireplaceGitTag'.log
-	sleep 2
-	tmux detach'
-	# sleep 5
-	# echo "exiting tmux session selenium-node-fireplace"
-}
+# startFireplace_SeleniumNode(){
+# 	echo "starting tmux session selenium-node-fireplace-fireplace"
+# 	tmux kill-session -t selenium-node-fireplace
+# 	tmux new -d -A -s selenium-node-fireplace '
+# 	export DISPLAY=:0.0
+# 	sleep 3
+# 	/usr/bin/java -jar /home/'$USER'/selenium-server-standalone-2.47.1.jar -role node -hub http://localhost:4444/grid/register -browser browserName=firefox -platform platform=LINUX 2>&1 | tee '$FireplaceBaseDir'/Fireplace-test-reports/test_log_from_SeNode_'$FireplaceGitTag'.log
+# 	sleep 2
+# 	tmux detach'
+# 	# sleep 5
+# 	# echo "exiting tmux session selenium-node-fireplace"
+# }
 
 configureFireplaceTests(){
 echo "................................configuring Fireplace test-properties......................................."
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cp $CURRENT_DIR/credentials.yaml $FireplaceBaseDir/test_$FireplaceInstance/fireplace_credentials.yaml
+cp $CURRENT_DIR/credentials.yaml $FireplaceBaseDir/test_$FireplaceInstance/credentials.yaml
 
 }
 
@@ -84,7 +87,7 @@ configureVirtualenv(){
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test --baseurl=http://localhost:$FireplacePort --browsername=firefox --credentials=fireplace_credentials.yaml --platform=linux --destructive  tests/desktop/consumer_pages/ 2>&1 | tee $FireplaceBaseDir/Fireplace-test-reports/test_reports_"$FireplaceGitTag".log
+	py.test -r=fsxXR --verbose --baseurl=http://$FireplaceHost:$FireplacePort --host $Grid_Address --port $Grid_Port --browsername=firefox --credentials=credentials.yaml --platform=linux --destructive  tests/desktop/consumer_pages/ 2>&1 | tee $FireplaceBaseDir/Fireplace-test-reports/test_reports_"$FireplaceGitTag".log
 }
 
 
@@ -98,12 +101,18 @@ while getopts ":u:t:m:p:" i; do
         m) FireplaceInstance=${OPTARG}
         ;;
         p) FireplacePort=${OPTARG}
+		;;
+		h) FireplaceHost=${OPTARG}
+		;;
+		g) Grid_Address=${OPTARG}
+        ;;
+        o) Grid_Port=${OPTARG}
     esac
 done
 
 shift $((OPTIND - 1))
 
-if [[ $USER == "" || $FireplaceGitTag == "" || $FireplaceInstance == "" || $FireplacePort == "" ]]; then
+if [[ $USER == "" || $FireplaceGitTag == "" || $FireplaceInstance == "" || $FireplacePort == "" || $FireplaceHost == "" || $Grid_Port == "" || $Grid_Address == "" ]]; then
         usage
 fi
 
@@ -113,9 +122,9 @@ installTestingCode
 
 gatherTestReports
 
-startFireplace_SeleniumHub
+# startFireplace_SeleniumHub
 
-startFireplace_SeleniumNode
+# startFireplace_SeleniumNode
 
 configureFireplaceTests
 
