@@ -10,7 +10,10 @@ usage(){
         echo "  -u <UID>                user name (e.g. adi)"
         echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
         echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
-        echo " 	-i <Test_Instance		Jenkins Test Repository Instance (e.g. first, second, third)	"
+        echo " 	-i <Test_Instance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
+        echo "  -g <Grid_Address>       Selenium GRID URL Address e.g. 192.168.2.3, infinity.st.cs.uni-saarland.de"
+        echo "  -g <Grid_Port>          Selenium GRID port e.g. 4444, 6666"
+        echo "  -b <Browser_Name>       Browser_Name e.g. firefox"
         exit 1
 }
 
@@ -30,6 +33,12 @@ if [ ! -d $JENKINS_Test_DIR/Jenkins_$Test_Instance ]; then
 fi
 
 git -C $JENKINS_Test_DIR/Jenkins_$Test_Instance pull
+
+}
+
+configureTestProperties(){
+sed -i 's|.*gridHubURL=.*|gridHubURL=http://'$Grid_Address':'$Grid_Port'/wd/hub|g' $JENKINS_Test_DIR/Jenkins_$Test_Instance/src/main/resources/infinity.properties
+sed -i 's|.*browserval=.*|browserval=http:'$Browser_Name'|g' $JENKINS_Test_DIR/Jenkins_$Test_Instance/src/main/resources/infinity.properties
 
 }
 
@@ -81,7 +90,7 @@ TYPE=existing BROWSER=infinity JENKINS_URL=http://localhost:$startupPort/jenkins
 }
 
 
-while getopts ":u:v:s:i:" i; do
+while getopts ":u:v:s:i:g:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
@@ -90,18 +99,26 @@ while getopts ":u:v:s:i:" i; do
         s) startupPort=${OPTARG}
 		;;
 		i) Test_Instance=${OPTARG}
+        ;;
+        g) Grid_Address=${OPTARG}
+        ;;
+        p) Grid_Port=${OPTARG}
+        ;;
+        b) Browser_Name=${OPTARG}
         esac
 done
 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $Test_Instance == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $Test_Instance == "" || $Grid_Address == "" || $Grid_Port == "" || $Browser_Name == "" ]]; then
         usage
 fi
 
 #..........................................function calls...................................
 
 downloadJenkinsTestSuite
+
+configureTestProperties
 
 gatherTestReports
 
