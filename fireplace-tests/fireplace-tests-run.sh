@@ -92,7 +92,7 @@ runFireplacetests(){
 
 
 
-while getopts ":u:t:m:p:" i; do
+while getopts ":u:t:m:p:h:g:o:" i; do
     case "${i}" in
         u) USER=${OPTARG}
         ;;
@@ -112,7 +112,7 @@ done
 
 shift $((OPTIND - 1))
 
-if [[ $USER == "" || $FireplaceGitTag == "" || $FireplaceInstance == "" || $FireplacePort == "" || $FireplaceHost == "" || $Grid_Port == "" || $Grid_Address == "" ]]; then
+if [[ $USER == "" || $FireplaceGitTag == "" || $FireplaceInstance == "" || $FireplacePort == "" || $FireplaceHost == "" || $Grid_Address == ""|| $Grid_Port == ""  ]]; then
         usage
 fi
 
