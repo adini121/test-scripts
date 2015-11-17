@@ -38,8 +38,8 @@ gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 echo "Current Time : $currentTime"
 REPORTS_DIR=/home/$USER/Dropbox/TestResults/Marketplace
-if [ ! -f $REPORTS_DIR/ant_log_"$FireplaceGitTag".log ];then
-	touch $REPORTS_DIR/"$currentTime"_ant_log_"$MoodleVersion".log
+if [ ! -f $REPORTS_DIR/"$currentTime"_ant_log_"$FireplaceGitTag".log ];then
+	touch $REPORTS_DIR/"$currentTime"_ant_log_"$FireplaceGitTag".log
 fi
 }
 
@@ -61,7 +61,7 @@ configureVirtualenv(){
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test -r=fsxXR --verbose --baseurl=http://$FireplaceHost:$FireplacePort --host $Grid_Address --port $Grid_Port --browsername=firefox --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --capability=email:test@testfabrik.com --capability=record:true --capability=extract:true --credentials=credentials.yaml --platform=MAC --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_ant_log_"$MoodleVersion".log
+	py.test -r=fsxXR --verbose --baseurl=http://$FireplaceHost:$FireplacePort --host $Grid_Address --port $Grid_Port --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --capability=email:test@testfabrik.com --capability=record:false --capability=extract:false --credentials=credentials.yaml --platform=MAC --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_ant_log_"$FireplaceGitTag".log
 }
 
 
