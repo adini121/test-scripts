@@ -28,7 +28,7 @@ echo "................................installing Fireplace test code............
 		if [ ! -d $FireplaceBaseDir/test_$FireplaceInstance ]; then
 			git -C $FireplaceBaseDir clone --recursive https://github.com/mozilla/marketplace-tests test_$FireplaceInstance
 		fi
- 	
+ 	git -C $FireplaceBaseDir/test_$FireplaceInstance stash
 	git -C $FireplaceBaseDir/test_$FireplaceInstance fetch
 	git -C $FireplaceBaseDir/test_$FireplaceInstance submodule update --init
 	git -C $FireplaceBaseDir/test_$FireplaceInstance checkout $CommitHash
@@ -37,9 +37,10 @@ echo "................................installing Fireplace test code............
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 echo "Current Time : $currentTime"
-REPORTS_DIR=/home/$USER/Dropbox/TestResults/Marketplace
-if [ ! -f $REPORTS_DIR/"$currentTime"_ant_log_"$FireplaceGitTag".log ];then
-	touch $REPORTS_DIR/"$currentTime"_ant_log_"$FireplaceGitTag".log
+REPORTS_DIR="/home/$USER/Dropbox/TestResults/Marketplace"
+echo "Reports directory is: "$REPORTS_DIR" "s
+if [ ! -f $REPORTS_DIR/"$currentTime"_fireplace_"$FireplaceGitTag".log ];then
+	touch $REPORTS_DIR/"$currentTime"_fireplace_"$FireplaceGitTag".log
 fi
 }
 
@@ -61,7 +62,7 @@ configureVirtualenv(){
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test -r=fsxXR --verbose --baseurl=http://$FireplaceHost:$FireplacePort --host $Grid_Address --port $Grid_Port --browsername=firefox --credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_ant_log_"$FireplaceGitTag".log
+	py.test -r=fsxXR --verbose --baseurl=http://$FireplaceHost:$FireplacePort --host $Grid_Address --port $Grid_Port --browsername=firefox --credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplace_"$FireplaceGitTag".log
 }
 
 
