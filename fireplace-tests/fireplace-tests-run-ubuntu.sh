@@ -38,9 +38,9 @@ gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 echo "Current Time : $currentTime"
 REPORTS_DIR="/home/$USER/Dropbox/TestResults/Marketplace"
-echo "Reports directory is: "$REPORTS_DIR" "s
-if [ ! -f $REPORTS_DIR/"$currentTime"_fireplace_"$FireplaceGitTag".log ];then
-	touch $REPORTS_DIR/"$currentTime"_fireplace_"$FireplaceGitTag".log
+echo "Reports directory is: "$REPORTS_DIR" "
+if [ ! -f $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log ];then
+	touch $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
 fi
 }
 
@@ -62,7 +62,7 @@ configureVirtualenv(){
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test -r=fsxXR --verbose --baseurl=http://$FireplaceHost:$FireplacePort --host $Grid_Address --port $Grid_Port --browsername=firefox --credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplace_"$FireplaceGitTag".log
+	py.test -r=fsxXR --verbose --baseurl=http://$FireplaceHost:$FireplacePort --host $Grid_Address --port $Grid_Port --browsername=firefox --credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
 }
 
 
