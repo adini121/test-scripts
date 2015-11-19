@@ -13,8 +13,7 @@ usage(){
         echo "  -m <moodleInstance>    Eg moodle_second, moodle_third"
         exit 1
 } 
-currentTime=$(date "+%Y.%m.%d-%H.%M.%S")
-echo "Current Time : $currentTime"
+
 
 mkdir -p /home/$USER/Moodle_Selenium_Tests
 BASE_TEST_DIR="/home/$USER/Moodle_Selenium_Tests/"
@@ -26,40 +25,44 @@ installTestingCode(){
 		if [ ! -d $BASE_TEST_DIR/test_$moodleInstance ]; then
 			git -C $BASE_TEST_DIR clone https://github.com/adini121/moodle-selenium-tests.git test_$moodleInstance
 		fi
- 	
+ 	git -C $BASE_TEST_DIR/test_$moodleInstance stash
 	git -C $BASE_TEST_DIR/test_$moodleInstance pull
 	
 }
 
 gatherTestReports(){
-REPORTS_DIR="/home/adi/Dropbox/TestResults/Moodle"
+currentTime=$(date "+%Y.%m.%d-%H.%M")
+echo "Current Time : "$currentTime""
+REPORTS_DIR=/home/$USER/Dropbox/TestResults/Moodle
 
-	if [ ! -f $REPORTS_DIR/ant_log_"$MoodleVersion".log ];
-		then
-			touch $REPORTS_DIR/$currentTime_ant_log_"$MoodleVersion".log
-			
+	if [ ! -f $REPORTS_DIR/moodle_"$MoodleVersion".log ];then
+		touch $REPORTS_DIR/"$currentTime"_moodle_"$MoodleVersion".log
+	fi
+
+	if [ ! -f $REPORTS_DIR/moodle_"$MoodleVersion".log ];then
+		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$MoodleVersion".log
 	fi
 }
 
 
 configureMoodleTests(){
 echo "................................configuring moodle test-properties......................................."
-#CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://134.96.235.134/'$moodleInstance'|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
 # sed -i 's|.*gridHubURL=.*|gridHubURL=http://localhost:4444/wd/hub|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
-
+sed -i 's|.*FileWriter fileWriter.*|FileWriter fileWriter = new FileWriter("/home/'$USER'/Dropbox/TestResults/Moodle/'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$MoodleVersion'.log", true);|g' $BASE_TEST_DIR/test_$moodleInstance/src/com/moodle/test/TestRunSettings.java
 }
 
 runMoodletests(){
 cd $BASE_TEST_DIR/test_$moodleInstance
-ant 2>&1 | tee $REPORTS_DIR/$currentTime_ant_log_"$MoodleVersion".log
+ant 2>&1 | tee $REPORTS_DIR/"$currentTime"_moodle_"$MoodleVersion".log
 #ant -Dbasedir=$BASE_TEST_DIR/test_$moodleInstance -f $BASE_TEST_DIR/test_$moodleInstance/build.xml 2>&1 | tee $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
 }
 
 backupJUNITresults(){
-cp -r junit-results $REPORTS_DIR/junit_results_$MoodleVersion_$currentTime
-cp -r junit-reports $REPORTS_DIR/junit_results_$MoodleVersion_$currentTime
+cp -r junit-results $REPORTS_DIR/"$currentTime"_junit_results_$MoodleVersion
+cp -r junit-reports $REPORTS_DIR/"$currentTime"_junit_results_$MoodleVersion
 Echo "Done JUNIT results backup at "$REPORTS_DIR" "
 }
 
@@ -86,12 +89,10 @@ installTestingCode
 
 gatherTestReports
 
-startMoodle_SeleniumHub
-
-startMoodle_SeleniumNode
-
 configureMoodleTests
 
 runMoodletests
+
+backupJUNITresults
 
 # pushTestReportsToRemoteRep
