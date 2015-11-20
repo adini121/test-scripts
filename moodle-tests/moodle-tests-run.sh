@@ -39,8 +39,8 @@ REPORTS_DIR=/home/$USER/Dropbox/TestResults/Moodle
 		touch $REPORTS_DIR/"$currentTime"_moodle_"$MoodleVersion".log
 	fi
 
-	if [ ! -f $REPORTS_DIR/moodle_"$MoodleVersion".log ];then
-		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$MoodleVersion".log
+	if [ ! -f "$currentTime"_BrowserIdList_"$MoodleVersion".list ];then
+		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$MoodleVersion".list
 	fi
 }
 
@@ -51,7 +51,7 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://134.96.235.134/'$moodleInstance'|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
 # sed -i 's|.*gridHubURL=.*|gridHubURL=http://localhost:4444/wd/hub|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
-sed -i 's|.*FileWriter fileWriter.*|FileWriter fileWriter = new FileWriter("/home/'$USER'/Dropbox/TestResults/Moodle/'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$MoodleVersion'.log", true);|g' $BASE_TEST_DIR/test_$moodleInstance/src/com/moodle/test/TestRunSettings.java
+sed -i 's|.*FileWriter fileWriter.*|FileWriter fileWriter = new FileWriter("/home/'$USER'/Dropbox/TestResults/Moodle'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$MoodleVersion'.list", true);|g' $BASE_TEST_DIR/test_$moodleInstance/src/com/moodle/test/TestRunSettings.java
 }
 
 runMoodletests(){
