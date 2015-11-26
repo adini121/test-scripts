@@ -23,7 +23,7 @@ installTestingCode(){
 			
 		echo "moodle test dir will be test_$moodleInstance"
 		if [ ! -d $BASE_TEST_DIR/test_$moodleInstance ]; then
-			git -C $BASE_TEST_DIR clone ssh://git@github.com:adini121/moodle-selenium-tests.git test_$moodleInstance
+			git -C $BASE_TEST_DIR clone git@github.com:adini121/moodle-selenium-tests.git test_$moodleInstance
 		fi
  	git -C $BASE_TEST_DIR/test_$moodleInstance stash
 	git -C $BASE_TEST_DIR/test_$moodleInstance pull
