@@ -50,7 +50,6 @@ configureMoodleTests(){
 mysql -u root << EOF
 	DROP DATABASE IF EXISTS sessionids_$MoodleVersion;
 EOF
-}
 echo "................................configuring moodle test-properties......................................."
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
