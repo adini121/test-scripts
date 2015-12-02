@@ -11,6 +11,7 @@ usage(){
         echo "  -u <USER>              User name"
         echo "  -v <MoodleVersion>     Moodle version for database and moodle home (eg 270, 281 etc)"
         echo "  -m <moodleInstance>    Eg moodle_second, moodle_third"
+        echo "  -i <moodle_ip>			Eg 134.96.222.14"
         exit 1
 } 
 
@@ -48,12 +49,13 @@ REPORTS_DIR=/home/$USER/Dropbox/TestResults/Moodle
 configureMoodleTests(){
 
 mysql -u root << EOF
-	DROP DATABASE IF EXISTS sessionids_$MoodleVersion;
+use moodle_sessionIDs;
+DROP TABLE IF EXISTS sessionids_$MoodleVersion;
 EOF
 echo "................................configuring moodle test-properties......................................."
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://134.96.235.134:8000/'$moodleInstance'|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
+sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://'$moodle_ip':8000/'$moodleInstance'|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
 # sed -i 's|.*gridHubURL=.*|gridHubURL=http://localhost:4444/wd/hub|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
 sed -i 's|test_session_ids|sessionids_'$MoodleVersion'|g' $BASE_TEST_DIR/test_$moodleInstance/src/com/moodle/test/TestRunSettings.java
 sed -i 's|.*FileWriter fileWriter.*|			FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$MoodleVersion'.list", true);|g' $BASE_TEST_DIR/test_$moodleInstance/src/com/moodle/test/TestRunSettings.java
@@ -72,19 +74,21 @@ Echo "Done JUNIT results backup at "$REPORTS_DIR" "
 }
 
 
-while getopts ":u:v:m:" i; do
+while getopts ":u:v:m:i:" i; do
     case "${i}" in
         u) USER=${OPTARG}
         ;;
 		v) MoodleVersion=${OPTARG}
 		;;
 		m) moodleInstance=${OPTARG}
+		;;
+		i) moodle_ip=${OPTARG}
     esac
 done
 
 shift $((OPTIND - 1))
 
-if [[ $USER == "" || $MoodleVersion == "" || $moodleInstance == "" ]]; then
+if [[ $USER == "" || $MoodleVersion == "" || $moodleInstance == "" || $moodle_ip = "" ]]; then
         usage
 fi
 
