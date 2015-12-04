@@ -37,7 +37,7 @@ echo "................................installing Fireplace test code............
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 echo "Current Time : $currentTime"
-REPORTS_DIR="/home/$USER/Dropbox/TestResults/Marketplace"
+REPORTS_DIR="/home/$USER/Dropbox/TestResults/misc"
 echo "Reports directory is: "$REPORTS_DIR" "
 if [ ! -f $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log ];then
 	touch $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
@@ -62,12 +62,11 @@ configureVirtualenv(){
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test -r=fsxXR --verbose --baseurl=http://$FireplaceHost:$FireplacePort --host $Grid_Address --port $Grid_Port --browsername=firefox --credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
+	py.test -r=fsxXR --verbose --baseurl=http://134.96.235.47:$FireplacePort --host 134.96.235.134 --port 4444 --browsername=firefox --credentials=credentials.yaml --platform=linux -m "not credentials and not action_chains" --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
 }
 
 
-
-while getopts ":u:t:m:p:h:g:o:c:" i; do
+while getopts ":u:t:m:p:c:" i; do
     case "${i}" in
         u) USER=${OPTARG}
         ;;
@@ -77,19 +76,13 @@ while getopts ":u:t:m:p:h:g:o:c:" i; do
         ;;
         p) FireplacePort=${OPTARG}
 		;;
-		h) FireplaceHost=${OPTARG}
-		;;
-		g) Grid_Address=${OPTARG}
-        ;;
-        o) Grid_Port=${OPTARG}
-		;;
 		c) CommitHash=${OPTARG}
     esac
 done
 
 shift $((OPTIND - 1))
 
-if [[ $USER == "" || $FireplaceGitTag == "" || $FireplaceInstance == "" || $FireplacePort == "" || $FireplaceHost == "" || $Grid_Address == ""|| $Grid_Port == "" || $CommitHash == "" ]]; then
+if [[ $USER == "" || $FireplaceGitTag == "" || $FireplaceInstance == "" || $FireplacePort == "" || $CommitHash == "" ]]; then
         usage
 fi
 
