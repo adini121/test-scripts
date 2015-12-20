@@ -50,8 +50,8 @@ cp $CURRENT_DIR/credentials.yaml $FireplaceBaseDir/test_$FireplaceInstance/crede
 configureVirtualenv(){
 echo "................................configuring Fireplace Virtualenv......................................."
 pip install virtualenv
-virtualenv $bedrockInstance
-source $bedrockInstance/bin/activate
+virtualenv $FireplaceInstance
+source $FireplaceInstance/bin/activate
 pip install -r requirements.txt
 sleep 2
 }
