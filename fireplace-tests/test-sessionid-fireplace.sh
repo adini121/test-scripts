@@ -7,7 +7,7 @@ usage(){
         echo "Usage: $0 <OPTIONS>"
         echo "Required options:"
         echo "  -u $USER                  user name"
-        echo "  -t <FireplaceGitTag>      Fireplace git tag eg: 2015.09.08 | 2015.09.15 | 2015.09.22"
+        echo "  -t <FireplaceGitTag>      Fireplace git tag eg: 2015_09_08 | 2015_09_15 | 2015_09_22"
         echo "  -m <FireplaceInstance>    Eg Fireplace_first, Fireplace_second"
         echo "  -p <FireplacePort>        Eg 8088, 8089"
         echo "  -c <CommitHash>			  CommitHash"
@@ -23,7 +23,7 @@ echo "................................installing Fireplace test code............
 			
 	echo "Fireplace dir will be test_$FireplaceInstance"
 		if [ ! -d $FireplaceBaseDir/test_$FireplaceInstance ]; then
-			git -C $FireplaceBaseDir clone --recursive https://github.com/mozilla/marketplace-tests test_$FireplaceInstance
+			git -C $FireplaceBaseDir clone -b sessionid-file-db --single-branch https://github.com/mozilla/marketplace-tests test_$FireplaceInstance
 		fi
  	git -C $FireplaceBaseDir/test_$FireplaceInstance stash
 	git -C $FireplaceBaseDir/test_$FireplaceInstance fetch
@@ -46,8 +46,8 @@ mysql -u root << EOF
 use fireplace_sessionIDs;
 DROP TABLE IF EXISTS sessionids_$FireplaceGitTag;
 EOF
-sed -i 's|test_session_ids|sessionids_'$FireplaceGitTag'|g' $BASE_TEST_DIR/test_$FireplaceInstance/conftest.py
-sed -i 's|/home/adi/python.txt|'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$FireplaceGitTag'.log|g' $BASE_TEST_DIR/test_$FireplaceInstance/conftest.py
+sed -i 's|test_session_ids|sessionids_'$FireplaceGitTag'|g' $FireplaceBaseDir/test_$FireplaceInstance/conftest.py
+sed -i 's|/home/adi/python.txt|'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$FireplaceGitTag'.log|g' $FireplaceBaseDir/test_$FireplaceInstance/conftest.py
 echo "................................configuring Fireplace test-properties......................................."
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cp $CURRENT_DIR/credentials.yaml $FireplaceBaseDir/test_$FireplaceInstance/credentials.yaml
