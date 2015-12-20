@@ -48,13 +48,12 @@ cp $CURRENT_DIR/credentials.yaml $FireplaceBaseDir/test_$FireplaceInstance/crede
 }
 
 configureVirtualenv(){
-	echo "................................configuring Fireplace Virtualenv......................................."
-	curl -sL https://raw.github.com/brainsik/virtualenv-burrito/master/virtualenv-burrito.sh | $SHELL
-	source /home/$USER/.venvburrito/startup.sh
-	cd $FireplaceBaseDir/test_$FireplaceInstance
-	mkvirtualenv test_$FireplaceInstance
-	pip install -r requirements.txt
-	sleep 2
+echo "................................configuring Fireplace Virtualenv......................................."
+pip install virtualenv
+virtualenv $bedrockInstance
+source $bedrockInstance/bin/activate
+pip install -r requirements.txt
+sleep 2
 }
 
 runFireplacetests(){
