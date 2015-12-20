@@ -49,6 +49,7 @@ cp $CURRENT_DIR/credentials.yaml $FireplaceBaseDir/test_$FireplaceInstance/crede
 
 configureVirtualenv(){
 echo "................................configuring Fireplace Virtualenv......................................."
+cd $FireplaceBaseDir/test_$FireplaceInstance
 pip install virtualenv
 virtualenv $FireplaceInstance
 source $FireplaceInstance/bin/activate
