@@ -9,10 +9,7 @@ usage(){
         echo "  -u $USER                  user name"
         echo "  -t <FireplaceGitTag>      Fireplace git tag eg: 2015.09.08 | 2015.09.15 | 2015.09.22"
         echo "  -m <FireplaceInstance>    Eg Fireplace_first, Fireplace_second"
-        echo "	-h <FireplaceHost>		  Eg localhost, 134.96.235.47, 134.96.235.134"
         echo "  -p <FireplacePort>        Eg 8088, 8089"
-        echo "  -g <Grid_Address>         Selenium GRID URL Address e.g. 192.168.2.3, infinity.st.cs.uni-saarland.de"
-        echo "  -o <Grid_Port>            Selenium GRID port e.g. 4444, 6666"
         echo "  -c <CommitHash>			  CommitHash"
         exit 1
 }
@@ -62,7 +59,7 @@ configureVirtualenv(){
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test -r=fsxXR --verbose --baseurl=http://134.96.235.47:$FireplacePort --host 134.96.235.134 --port 4444 --browsername=firefox --credentials=credentials.yaml --platform=linux -m "not credentials and not action_chains" --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
+	py.test -r=fsxXR --verbose --baseurl=http://localhost:$FireplacePort --host localhost --port 4444 --browsername=firefox --credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
 }
 
 
