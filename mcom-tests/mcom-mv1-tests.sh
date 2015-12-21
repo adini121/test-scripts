@@ -59,6 +59,7 @@ sed -i 's|/home/adi/python.txt|'$REPORTS_DIR'/'$currentTime'_BedrockBrowserIdLis
 }
 
 configureVirtualenv(){
+cd $BedrockBaseDir/test_mv1_$BedrockInstance
 echo "................................configuring Bedrock Virtualenv......................................."
 pip install virtualenv
 virtualenv $BedrockInstance
