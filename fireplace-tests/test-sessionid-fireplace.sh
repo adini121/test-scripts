@@ -23,7 +23,7 @@ echo "................................installing Fireplace test code............
 			
 	echo "Fireplace dir will be test_$FireplaceInstance"
 		if [ ! -d $FireplaceBaseDir/test_$FireplaceInstance ]; then
-			git -C $FireplaceBaseDir clone -b sessionid-file-db --single-branch git@github.com:adini121/marketplace-tests.git test_$FireplaceInstance
+			git -C $FireplaceBaseDir clone -b fireplace-mv1 --single-branch git@github.com:adini121/marketplace-tests.git test_$FireplaceInstance
 		fi
  	git -C $FireplaceBaseDir/test_$FireplaceInstance stash
 	git -C $FireplaceBaseDir/test_$FireplaceInstance fetch
@@ -65,7 +65,7 @@ sleep 2
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test -r=fsxXR --verbose --driver=firefox --credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
+	py.test -r=fsxXR --verbose --driver=firefox --baseurl=http://134.96.78.140 --port=$FireplacePort--credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
 }
 
 
