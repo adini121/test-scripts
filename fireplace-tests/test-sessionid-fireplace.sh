@@ -59,6 +59,7 @@ pip install virtualenv
 virtualenv $FireplaceInstance
 source $FireplaceInstance/bin/activate
 pip install -r requirements.txt
+pip install mysql-connector-python --allow-external mysql-connector-python
 sleep 2
 }
 
