@@ -65,7 +65,7 @@ sleep 2
 
 runFireplacetests(){
 	#export DISPLAY=:0.0
-	py.test -r=fsxXR --verbose --driver=firefox --baseurl=http://134.96.78.140 --port=$FireplacePort--credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
+	py.test -r=fsxXR --verbose --driver=firefox --baseurl=http://134.96.78.140 --port=$FireplacePort --credentials=credentials.yaml --platform=linux --destructive tests/desktop/consumer_pages/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_"$CommitHash"_"$FireplaceGitTag".log
 }
 
 
