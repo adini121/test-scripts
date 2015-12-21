@@ -28,7 +28,6 @@ echo "................................installing Fireplace test code............
  	git -C $FireplaceBaseDir/test_$FireplaceInstance stash
 	git -C $FireplaceBaseDir/test_$FireplaceInstance fetch
 	git -C $FireplaceBaseDir/test_$FireplaceInstance submodule update --init
-	git -C $FireplaceBaseDir/test_$FireplaceInstance checkout $CommitHash
 }
 
 gatherTestReports(){
