@@ -23,7 +23,7 @@ echo "................................installing Fireplace test code............
 			
 	echo "Fireplace dir will be test_$FireplaceInstance"
 		if [ ! -d $FireplaceBaseDir/test_$FireplaceInstance ]; then
-			git -C $FireplaceBaseDir clone -b sessionid-file-db --single-branch https://github.com/mozilla/marketplace-tests test_$FireplaceInstance
+			git -C $FireplaceBaseDir clone -b sessionid-file-db --single-branch git@github.com:adini121/marketplace-tests.git test_$FireplaceInstance
 		fi
  	git -C $FireplaceBaseDir/test_$FireplaceInstance stash
 	git -C $FireplaceBaseDir/test_$FireplaceInstance fetch
