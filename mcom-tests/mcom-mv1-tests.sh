@@ -8,7 +8,6 @@ usage(){
         echo "Required options:"
         echo "_______________________________________"
         echo "________ I M P O R T A N T ____________"
-        echo "__EXTRACT AND RECORD ARE TURNED OFF____"
         echo "__Run inside venv from home directory__"
         echo "_______________________________________"
         echo "  -u $USER                User name"
