@@ -24,10 +24,10 @@ installTestingCode(){
 			
 		echo "moodle test dir will be test_$moodleInstance"
 		if [ ! -d $BASE_TEST_DIR/test_$moodleInstance ]; then
-			git -C $BASE_TEST_DIR clone -b infinity-win8.1 --single-branch git@github.com:adini121/moodle-selenium-tests.git test_$moodleInstance
+			git -C $BASE_TEST_DIR clone -b implicit-waits --single-branch git@github.com:adini121/moodle-selenium-tests.git test_WAITS_$moodleInstance
 		fi
  	git -C $BASE_TEST_DIR/test_$moodleInstance stash
-	git -C $BASE_TEST_DIR/test_$moodleInstance pull origin infinity-win8.1
+	git -C $BASE_TEST_DIR/test_$moodleInstance pull
 	
 }
 
