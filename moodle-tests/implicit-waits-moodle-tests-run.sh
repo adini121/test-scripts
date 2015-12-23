@@ -22,12 +22,12 @@ BASE_TEST_DIR="/home/$USER/Moodle_Selenium_Tests/"
 installTestingCode(){
 	echo "................................installing moodle code......................................."
 			
-		echo "moodle test dir will be test_$moodleInstance"
-		if [ ! -d $BASE_TEST_DIR/test_$moodleInstance ]; then
+		echo "moodle test dir will be test_WAITS_$moodleInstance"
+		if [ ! -d $BASE_TEST_DIR/test_WAITS_$moodleInstance ]; then
 			git -C $BASE_TEST_DIR clone -b implicit-waits --single-branch git@github.com:adini121/moodle-selenium-tests.git test_WAITS_$moodleInstance
 		fi
- 	git -C $BASE_TEST_DIR/test_$moodleInstance stash
-	git -C $BASE_TEST_DIR/test_$moodleInstance pull
+ 	git -C $BASE_TEST_DIR/test_WAITS_$moodleInstance stash
+	git -C $BASE_TEST_DIR/test_WAITS_$moodleInstance pull
 	
 }
 
@@ -55,16 +55,16 @@ EOF
 echo "................................configuring moodle test-properties......................................."
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://'$moodle_ip':8000/'$moodleInstance'|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
-# sed -i 's|.*gridHubURL=.*|gridHubURL=http://localhost:4444/wd/hub|g' $BASE_TEST_DIR/test_$moodleInstance/properties/runParameters.properties
-sed -i 's|test_session_ids|sessionids_'$MoodleVersion'|g' $BASE_TEST_DIR/test_$moodleInstance/src/com/moodle/test/TestRunSettings.java
-sed -i 's|.*FileWriter fileWriter.*|			FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$MoodleVersion'.list", true);|g' $BASE_TEST_DIR/test_$moodleInstance/src/com/moodle/test/TestRunSettings.java
+sed -i 's|.*moodleHomePage=.*|moodleHomePage=http://'$moodle_ip':8000/'$moodleInstance'|g' $BASE_TEST_DIR/test_WAITS_$moodleInstance/properties/runParameters.properties
+# sed -i 's|.*gridHubURL=.*|gridHubURL=http://localhost:4444/wd/hub|g' $BASE_TEST_DIR/test_WAITS_$moodleInstance/properties/runParameters.properties
+sed -i 's|test_session_ids|sessionids_'$MoodleVersion'|g' $BASE_TEST_DIR/test_WAITS_$moodleInstance/src/com/moodle/test/TestRunSettings.java
+sed -i 's|.*FileWriter fileWriter.*|			FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$MoodleVersion'.list", true);|g' $BASE_TEST_DIR/test_WAITS_$moodleInstance/src/com/moodle/test/TestRunSettings.java
 }
 
 runMoodletests(){
-cd $BASE_TEST_DIR/test_$moodleInstance
+cd $BASE_TEST_DIR/test_WAITS_$moodleInstance
 ant 2>&1 | tee $REPORTS_DIR/"$currentTime"_moodle_"$MoodleVersion".log
-#ant -Dbasedir=$BASE_TEST_DIR/test_$moodleInstance -f $BASE_TEST_DIR/test_$moodleInstance/build.xml 2>&1 | tee $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
+#ant -Dbasedir=$BASE_TEST_DIR/test_WAITS_$moodleInstance -f $BASE_TEST_DIR/test_WAITS_$moodleInstance/build.xml 2>&1 | tee $BASE_TEST_DIR/moodle-test-reports/test_reports_"$MoodleVersion".log
 }
 
 backupJUNITresults(){
