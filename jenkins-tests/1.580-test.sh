@@ -53,6 +53,15 @@ TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort
 #TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/plugins_1.580_ath_reports_"$JenkinsVersion".log
 }
 
+cleanup(){
+echo "_________Cleaning all processes and directories left behind by this jenkins instance____________"
+cd /tmp
+kill $(ps aux | grep -E 'nisal.*java -jar /tmp*' | awk '{print $2}')
+kill $(ps aux | grep -E 'nisal.*slave*' | awk '{print $2}')
+kill $(ps aux | grep -E '/usr/lib/jvm/java.*TomcatInstance'$startupPort'*' | awk '{print $2}')
+echo "Deleting Jenkins TMP directory"
+rm -rf /home/$user/jenkinsHome/jenkinsHome$JenkinsVersion
+}
 
 while getopts ":u:v:s:i:" i; do
         case "${i}" in
@@ -81,3 +90,4 @@ gatherTestReports
 
 runJenkinsTests
 
+cleanup
