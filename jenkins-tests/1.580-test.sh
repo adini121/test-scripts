@@ -55,7 +55,6 @@ TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort
 
 cleanup(){
 echo "_________Cleaning all processes and directories left behind by this jenkins instance____________"
-cd /tmp
 kill $(ps aux | grep -E 'nisal.*java -jar /tmp*' | awk '{print $2}')
 kill $(ps aux | grep -E 'nisal.*slave*' | awk '{print $2}')
 kill $(ps aux | grep -E '/usr/lib/jvm/java.*TomcatInstance'$startupPort'*' | awk '{print $2}')
