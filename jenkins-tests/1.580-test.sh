@@ -49,6 +49,7 @@ runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
 cd $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance
+export JAVA_OPTS="-Djava.io.tmpdir=/home/$user/jenkinsHome/jenkinsHome$JenkinsVersion/tmp"
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/core/*Test test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/core_1.580_ath_reports_"$JenkinsVersion".log
 #TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/plugins_1.580_ath_reports_"$JenkinsVersion".log
 }
@@ -59,7 +60,7 @@ kill $(ps aux | grep -E 'nisal.*java -jar /tmp*' | awk '{print $2}')
 kill $(ps aux | grep -E 'nisal.*slave*' | awk '{print $2}')
 kill $(ps aux | grep -E '/usr/lib/jvm/java.*TomcatInstance'$startupPort'*' | awk '{print $2}')
 echo "Deleting Jenkins TMP directory"
-rm -rf /home/$user/jenkinsHome/jenkinsHome$JenkinsVersion
+rm -rf /home/$user/jenkinsHome/jenkinsHome$JenkinsVersion/tmp
 }
 
 while getopts ":u:v:s:i:" i; do
