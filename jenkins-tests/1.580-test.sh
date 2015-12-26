@@ -5,14 +5,14 @@
 
 
 usage(){
-        echo "Usage: $0 <OPTIONS>"
-        echo "Required options:"
-        echo "  -u <UID>                user name (e.g. adi)"
-        echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
-        echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
-        echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
-        echo "  -v <JenkinsVersion>     DatabaseSessionIDsVersion (e.g. 1_600, 1_615)"
-        exit 1
+echo "Usage: $0 <OPTIONS>"
+echo "Required options:"
+echo "  -u <UID>                user name (e.g. adi)"
+echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
+echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
+echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
+echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
+exit 1
 }
 
 downloadJenkinsTestSuite(){
@@ -83,7 +83,7 @@ while getopts ":u:v:s:i:d:" i; do
 		;;
 		i) TestInstance=${OPTARG}
         ;;
-        d) DatabaseSessionIDsVersion
+        d) DatabaseSessionIDsVersion=${OPTARG}
         esac
 done
 
