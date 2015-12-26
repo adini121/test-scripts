@@ -36,22 +36,21 @@ fi
 
 gatherTestReports(){
 
-	if [ ! -f /home/nisal/Dropbox/TestResults/Jenkins/1.580_ath_reports_"$JenkinsVersion".log ];then
-			touch /home/nisal/Dropbox/TestResults/Jenkins/1.580_ath_reports_"$JenkinsVersion".log
+	if [ ! -f /home/nisal/Dropbox/TestResults/Jenkins/core_1.580_ath_reports_"$JenkinsVersion".log ];then
+			touch /home/nisal/Dropbox/TestResults/Jenkins/core_1.580_ath_reports_"$JenkinsVersion".log
 	fi
+	#if [ ! -f /home/nisal/Dropbox/TestResults/Jenkins/plugins_1.580_ath_reports_"$JenkinsVersion".log ];then
+	#		touch /home/nisal/Dropbox/TestResults/Jenkins/plugins_1.580_ath_reports_"$JenkinsVersion".log
+#	fi
 }
 
-exportEnvironmentVariables(){
-export MAVEN_OPTS="-Xmx1024M"
-export PATH=$PATH:$JAVA_HOME
-}
 
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
-export JAVA_OPTS="-Xms512m -Xmx2048m -server -XX:MaxPermSize=512m"
 cd $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance
-TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/1.580_ath_reports_"$JenkinsVersion".log
+TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/core/*Test test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/core_1.580_ath_reports_"$JenkinsVersion".log
+#TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/plugins_1.580_ath_reports_"$JenkinsVersion".log
 }
 
 
@@ -79,8 +78,6 @@ fi
 downloadJenkinsTestSuite
 
 gatherTestReports
-
-exportEnvironmentVariables
 
 runJenkinsTests
 
