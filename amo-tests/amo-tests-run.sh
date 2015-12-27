@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS sessionids_$AMOGitTag_underscores;
 EOF
 # sed -i 's|test_session_ids|sessionids_'$AMOGitTag_underscores'|g' $AMOBaseDir/test_$AMOInstance/conftest.py
 # sed -i 's|/home/adi/python.txt|'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$AMOGitTag_underscores'.log|g' $AMOBaseDir/test_$AMOInstance/conftest.py
-cp $CURRENT_DIR/amo_variables.json $AMOBaseDir/test_$AMOInstance
+cp $CURRENT_DIR/credentials.yaml $AMOBaseDir/test_$AMOInstance/credentials.yaml
 }
 
 configureVirtualenv(){
@@ -57,13 +57,13 @@ pip install virtualenv
 virtualenv $AMOInstance
 source $AMOInstance/bin/activate
 pip install -r requirements.txt
-pip install mysql-connector-python --allow-external mysql-connector-python
+pip install MySQL-python
 sleep 1
 }
 
 runAMOtests(){
 #export DISPLAY=:0.0
-py.test  -r=fsxXR --verbose --baseurl=http://134.96.235.47:$AMOPort --host 134.96.235.159 --port 1235 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=email:test@testfabrik.com --capability=record:false --capability=extract:false --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --variables=amo_variables.json --platform=MAC --destructive tests/desktop/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_AMOTests_"$CommitHash"_"$AMOGitTag_underscores".log
+py.test  -r=fsxXR --verbose --baseurl=http://134.96.235.47:$AMOPort --host 134.96.235.159 --port 1235 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=email:test@testfabrik.com --capability=record:false --capability=extract:false --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --credentials=credentials.yaml --platform=MAC --destructive tests/desktop/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_AMOTests_"$CommitHash"_"$AMOGitTag_underscores".log
 }
 
 
