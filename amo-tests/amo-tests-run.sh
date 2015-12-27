@@ -68,7 +68,7 @@ py.test  -r=fsxXR --verbose --baseurl=http://134.96.235.47:$AMOPort --host 134.9
 
 
 
-while getopts ":u:t:m:p:" i; do
+while getopts ":u:t:m:p:c:" i; do
     case "${i}" in
         u) USER=${OPTARG}
         ;;
