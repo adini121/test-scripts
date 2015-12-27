@@ -19,9 +19,10 @@ AMOBaseDir="/home/$USER/AMOHome"
 installTestingCode(){
 echo "................................installing AMO test code......................................."
 echo "AMO dir will be test_$AMOInstance"
-if [ ! -d $AMOBaseDir/test_$AMOInstance ]; then
-		git -C $AMOBaseDir clone https://github.com/mozilla/Addon-Tests test_$AMOInstance
+if [ -d $AMOBaseDir/test_$AMOInstance ]; then
+	rm -rf $AMOBaseDir/test_$AMOInstance
 fi
+git -C $AMOBaseDir clone https://github.com/mozilla/Addon-Tests test_$AMOInstance
 git -C $AMOBaseDir/test_$AMOInstance stash
 git -C $AMOBaseDir/test_$AMOInstance pull
 git -C $AMOBaseDir/test_$AMOInstance checkout $CommitHash
