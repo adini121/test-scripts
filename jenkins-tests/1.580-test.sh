@@ -36,7 +36,7 @@ fi
 }
 
 gatherTestReports(){
-currentTime=$(date "+%Y.%m.%d")
+currentTime=$(date "+%Y.%m.%d-%H.%M")
 REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins"
 if [ ! -f $REPORTS_DIR/core_1.580_ath_reports_"$JenkinsVersion".log ];then
     	touch $REPORTS_DIR/core_1.580_ath_reports_"$JenkinsVersion".log
@@ -46,8 +46,9 @@ if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log ];then
 fi
 mysql -u root << EOF
 use jenkins_core_sessionIDs;
-DROP TABLE IF EXISTS sessionids_$MoodleVersion;
+DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 EOF
+
 sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
 sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
 }
