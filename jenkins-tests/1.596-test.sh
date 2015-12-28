@@ -14,6 +14,7 @@ usage(){
         echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
         echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
         echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
+        echo "  -d <SessionIDs>     Database SessionIDs Version (e.g. 1_600, 1_615)" 
         exit 1
 }
 
@@ -38,25 +39,42 @@ fi
 }
 
 gatherTestReports(){
+currentTime=$(date "+%Y.%m.%d-%H.%M")
+REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins"
+if [ ! -f $REPORTS_DIR/core_1.596_ath_reports_"$JenkinsVersion".log ];then
+        touch $REPORTS_DIR/core_1.596_ath_reports_"$JenkinsVersion".log
+fi
+# if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log ];then
+#         touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log
+# fi
+# mysql -u root << EOF
+# use jenkins_core_sessionIDs;
+# DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
+# EOF
 
-	if [ ! -f /home/nisal/Dropbox/TestResults/Jenkins/1.596_ath_reports_"$JenkinsVersion".log ];then
-			touch /home/nisal/Dropbox/TestResults/Jenkins/1.596_ath_reports_"$JenkinsVersion".log
-	fi
+# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
+# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
 }
 
-exportEnvironmentVariables(){
-export MAVEN_OPTS="-Xmx1024M"
-export PATH=$PATH:$JAVA_HOME
-}
 
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
-export JAVA_OPTS="-Xms512m -Xmx2048m -server -XX:MaxPermSize=512m"
 cd $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
-TYPE=existing BROWSER=seleniumgrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/1.596_ath_reports_"$JenkinsVersion".log
+TYPE=existing BROWSER=seleniumgrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/core/*Test test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/1.596_ath_reports_"$JenkinsVersion".log
 }
 
+# cleanup(){
+# echo "_________Cleaning all processes and directories left behind by this jenkins instance____________"
+# sleep 5
+# kill $(ps aux | grep -E 'nisal.*java -jar /tmp*' | awk '{print $2}')
+# kill $(ps aux | grep -E 'nisal.*slave*' | awk '{print $2}')
+# kill $(ps aux | grep -E '/usr/lib/jvm/java.*TomcatInstance'$startupPort'*' | awk '{print $2}')
+# echo "Deleting Jenkins TMP directory"
+# cd /tmp
+# rm -rf $(ls -la | grep nisal | awk '{print $9}')
+# echo "done"
+# }
 
 while getopts ":u:v:s:i:" i; do
         case "${i}" in
@@ -67,13 +85,14 @@ while getopts ":u:v:s:i:" i; do
         s) startupPort=${OPTARG}
 		;;
 		i) TestInstance=${OPTARG}
-
+        ;;
+        d) DatabaseSessionIDsVersion=${OPTARG}
         esac
 done
 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $DatabaseSessionIDsVersion == ""  ]]; then
         usage
 fi
 
@@ -83,7 +102,7 @@ downloadJenkinsTestSuite
 
 gatherTestReports
 
-exportEnvironmentVariables
 
 runJenkinsTests
 
+# cleanup
