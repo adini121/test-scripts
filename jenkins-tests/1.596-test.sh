@@ -14,7 +14,7 @@ usage(){
         echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
         echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
         echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
-        echo "  -d <SessionIDs>     Database SessionIDs Version (e.g. 1_600, 1_615)" 
+        # echo "  -d <SessionIDs>     Database SessionIDs Version (e.g. 1_600, 1_615)" 
         exit 1
 }
 
@@ -85,14 +85,14 @@ while getopts ":u:v:s:i:" i; do
         s) startupPort=${OPTARG}
 		;;
 		i) TestInstance=${OPTARG}
-        ;;
-        d) DatabaseSessionIDsVersion=${OPTARG}
+        # ;;
+        # d) DatabaseSessionIDsVersion=${OPTARG}
         esac
 done
 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $DatabaseSessionIDsVersion == ""  ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" ]]; then
         usage
 fi
 
