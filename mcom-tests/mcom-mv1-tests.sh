@@ -11,10 +11,9 @@ usage(){
         echo "__Run inside venv from home directory__"
         echo "_______________________________________"
         echo "  -u $USER                User name"
-        echo "  -t <BedrockGitTag>      Bedrock git CommitHash eg: 2015.09.08 | 2015.09.15 | 2015.09.22"
+        echo "  -t <BedrockGitTag>      Bedrock git CommitHash eg: 2015_09_08"
         echo "  -m <BedrockInstance>    Eg Bedrock_mv1_first, Bedrock_mv1_second"
         echo "  -p <BedrockPort>        Eg 8088, 8089"
-        echo "  -c <CommitHash>			Bedrock tests CommitHash"
         exit 1
 }
 
@@ -64,7 +63,7 @@ pip install virtualenv
 virtualenv $BedrockInstance
 source $BedrockInstance/bin/activate
 pip install -r requirements.txt
-pip install mysql-connector-python --allow-external mysql-connector-python
+pip install MySQL-python
 sleep 2
 }
 
