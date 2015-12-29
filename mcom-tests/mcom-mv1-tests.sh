@@ -25,7 +25,7 @@ installTestingCode(){
 echo "................................installing Bedrock test code......................................."
 			
 echo "Bedrock dir will be test_mv1_$BedrockInstance"
-if [ ! -d $BedrockBaseDir/test_mv1_$BedrockInstance ]; then
+if [ -d $BedrockBaseDir/test_mv1_$BedrockInstance ]; then
 	rm -rf $BedrockBaseDir/test_mv1_$BedrockInstance
 fi
 git -C $BedrockBaseDir clone -b mcom-mv1-dec16 --single-branch git@github.com:adini121/mcom-tests.git test_mv1_$BedrockInstance
