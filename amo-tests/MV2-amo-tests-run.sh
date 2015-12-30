@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS sessionids_$AMOGitTag;
 EOF
 sed -i 's|test_session_ids|sessionids_'$AMOGitTag'|g' $AMOBaseDir/test_MV2_$AMOInstance/conftest.py
 sed -i 's|/home/nisal/python.txt|'$REPORTS_DIR'/'$currentTime'_AMO_BrowserIdList_'$AMOGitTag'.log|g' $AMOBaseDir/test_MV2_$AMOInstance/conftest.py
-cp $CURRENT_DIR/credentials.yaml $AMOBaseDir/test_MV2_$AMOInstance/credentials.yaml
+cp $CURRENT_DIR/amo_variables.json $AMOBaseDir/test_MV2_$AMOInstance/amo_variables.json
 }
 
 configureVirtualenv(){
@@ -66,7 +66,7 @@ sleep 2
 
 runAMOtests(){
 #export DISPLAY=:0.0
-py.test  -r=fsxXR --verbose --baseurl=http://134.96.235.47:$AMOPort --host 134.96.235.159 --port 1235 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=email:test@testfabrik.com --capability=record:true --capability=extract:true --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --credentials=credentials.yaml --platform=MAC --destructive tests/desktop/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_AMOTests_MV2_"$AMOGitTag".log
+py.test  -r=fsxXR --verbose --baseurl=http://134.96.235.47:$AMOPort --host 134.96.235.159 --port 1235 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=email:test@testfabrik.com --capability=record:true --capability=extract:true --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --variables=amo_variables.json --platform=MAC --destructive tests/desktop/ 2>&1 | tee $REPORTS_DIR/"$currentTime"_AMOTests_MV2_"$AMOGitTag".log
 }
 
 
