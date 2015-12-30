@@ -74,7 +74,7 @@ rm -rf $(ls -la | grep -E '*nisal*.*._.*' | awk '{print $9}')
 echo "done"
 }
 
-while getopts ":u:v:s:i:" i; do
+while getopts ":u:v:s:i:d:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
