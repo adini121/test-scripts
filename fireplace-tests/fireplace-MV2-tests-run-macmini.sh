@@ -20,17 +20,12 @@ FireplaceBaseDir="/home/$USER/Fireplace"
 installTestingCode(){
 echo "................................installing Fireplace test code......................................."
 			
-	echo "Fireplace dir will be test_MV2_$FireplaceInstance"
-		if [ ! -d $FireplaceBaseDir/test_MV2_$FireplaceInstance ]; then
-			rm -rf $FireplaceBaseDir/test_MV2_$FireplaceInstance
-            git -C $FireplaceBaseDir clone -b fireplace-mv2 --single-branch git@github.com:adini121/marketplace-tests.git test_MV2_$FireplaceInstance
-		else 
-            git -C $FireplaceBaseDir clone -b fireplace-mv2 --single-branch git@github.com:adini121/marketplace-tests.git test_MV2_$FireplaceInstance
-        fi    
- 	git -C $FireplaceBaseDir/test_MV2_$FireplaceInstance stash
-	git -C $FireplaceBaseDir/test_MV2_$FireplaceInstance fetch
-	git -C $FireplaceBaseDir/test_MV2_$FireplaceInstance submodule update --init
-	
+echo "Fireplace dir will be test_MV2_$FireplaceInstance"
+	if [ -d $FireplaceBaseDir/test_MV2_$FireplaceInstance ]; then
+		rm -rf $FireplaceBaseDir/test_MV2_$FireplaceInstance
+    fi    
+
+git -C $FireplaceBaseDir clone -b fireplace-mv2 --single-branch git@github.com:adini121/marketplace-tests.git test_MV2_$FireplaceInstance
 }
 
 gatherTestReports(){
@@ -67,7 +62,7 @@ pip install virtualenv
 virtualenv $FireplaceInstance
 source $FireplaceInstance/bin/activate
 pip install -r requirements.txt
-pip install mysql-connector-python --allow-external mysql-connector-python
+pip install MySQL-python
 sleep 2
 }
 
