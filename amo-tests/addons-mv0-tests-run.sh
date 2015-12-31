@@ -47,7 +47,7 @@ use amo_sessionIDs;
 DROP TABLE IF EXISTS sessionids_$AMOGitTag;
 EOF
 sed -i 's|test_session_ids|sessionids_'$AMOGitTag'|g' $AMOBaseDir/test_mv0_$AMOInstance/conftest.py
-sed -i 's|/home/nisal/python.txt|'$REPORTS_DIR'/'$currentTime'_AMO_BrowserIdList_'$AMOGitTag'.log|g' $AMOBaseDir/test_mv0_$AMOInstance/conftest.py
+sed -i 's|/home/nisal/python.txt|'$REPORTS_DIR'/'$currentTime'_AMO_BrowserIdList_mv0_'$AMOGitTag'.log|g' $AMOBaseDir/test_mv0_$AMOInstance/conftest.py
 cp $CURRENT_DIR/credentials.yaml $AMOBaseDir/test_mv0_$AMOInstance/credentials.yaml
 }
 
