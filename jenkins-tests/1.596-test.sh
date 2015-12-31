@@ -60,19 +60,19 @@ cd $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
 TYPE=existing BROWSER=seleniumgrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/core/*Test test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/core_1.596_ath_reports_"$JenkinsVersion".log
 }
 
-cleanup(){
-echo "_________Cleaning all processes and directories left behind by this jenkins instance____________"
-sleep 5
-kill $(ps aux | grep -E 'nisal.*java -jar /tmp*' | awk '{print $2}')
-kill $(ps aux | grep -E 'nisal.*slave*' | awk '{print $2}')
-kill $(ps aux | grep -E '/usr/lib/jvm/java.*TomcatInstance'$startupPort'*' | awk '{print $2}')
-echo "Deleting Jenkins TMP directory"
-cd /tmp/
-rm -rf tmp*
-rm -rf $(ls -la | grep -E 'nisal.*slave*' | awk '{print $9}')
-rm -rf $(ls -la | grep -E '*nisal*.*._.*' | awk '{print $9}')
-echo "done"
-}
+# cleanup(){
+# echo "_________Cleaning all processes and directories left behind by this jenkins instance____________"
+# sleep 5
+# kill $(ps aux | grep -E 'nisal.*java -jar /tmp*' | awk '{print $2}')
+# kill $(ps aux | grep -E 'nisal.*slave*' | awk '{print $2}')
+# kill $(ps aux | grep -E '/usr/lib/jvm/java.*TomcatInstance'$startupPort'*' | awk '{print $2}')
+# echo "Deleting Jenkins TMP directory"
+# cd /tmp/
+# rm -rf tmp*
+# rm -rf $(ls -la | grep -E 'nisal.*slave*' | awk '{print $9}')
+# rm -rf $(ls -la | grep -E '*nisal*.*._.*' | awk '{print $9}')
+# echo "done"
+# }
 
 while getopts ":u:v:s:i:d:" i; do
         case "${i}" in
@@ -103,4 +103,4 @@ gatherTestReports
 
 runJenkinsTests
 
-cleanup
+# cleanup
