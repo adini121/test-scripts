@@ -1,0 +1,19 @@
+{
+  "users": {
+    "default": {
+      "email": "adamsken1221@gmail.com",
+      "password": "adsad121",
+      "name": "adamsken"
+    },
+    "editable": {
+      "email": "",
+      "password": "",
+      "name": ""
+    }
+  },
+  "paypal": {
+    "email": "testpaypal121@gmail.com",
+    "password": "testpaypal121",
+    "name": "Ken Adams"
+  }
+}
