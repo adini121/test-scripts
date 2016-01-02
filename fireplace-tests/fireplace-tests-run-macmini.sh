@@ -26,7 +26,7 @@ echo "................................installing Fireplace test code............
 			rm -rf $FireplaceBaseDir/test_$FireplaceInstance
 		fi
 git -C $FireplaceBaseDir clone -b master --single-branch git@github.com:adini121/marketplace-tests.git test_$FireplaceInstance
-git -C $FireplaceBaseDir checkout $CommitHash test_$FireplaceInstance
+git -C $FireplaceBaseDir/test_$FireplaceInstance checkout $CommitHash
 }
 
 gatherTestReports(){
