@@ -29,10 +29,10 @@ if [ ! -d $JENKINS_Test_DIR ]; then
 fi 
 
 if [ ! -d $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance ]; then
-    git -C $JENKINS_Test_DIR clone -b 1.625-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.625_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone -b 1.625-117 --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.625_ath_$TestInstance
 else
     rm -rf $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance
-    git -C $JENKINS_Test_DIR clone -b 1.625-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.625_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone -b 1.625-117 --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.625_ath_$TestInstance
 fi
 
 }
@@ -44,17 +44,11 @@ gatherTestReports(){
 	fi
 }
 
-exportEnvironmentVariables(){
-export MAVEN_OPTS="-Xmx1024M"
-export PATH=$PATH:$JAVA_HOME
-}
 
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
-export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
-export JAVA_OPTS="-Xms512m -Xmx2048m -server -XX:MaxPermSize=512m"
 cd $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance
-TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/1.625_ath_reports_"$JenkinsVersion".log
+TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/core/*Test test 2>&1 | tee /home/nisal/Dropbox/TestResults/Jenkins/1.625_ath_reports_"$JenkinsVersion".log
 }
 
 
@@ -82,8 +76,6 @@ fi
 downloadJenkinsTestSuite
 
 gatherTestReports
-
-exportEnvironmentVariables
 
 runJenkinsTests
 
