@@ -36,7 +36,7 @@ fi
 
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
-REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Tem"
+REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
 if [ ! -f $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log ];then
     	touch $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log
 fi
@@ -56,8 +56,7 @@ fi
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_1.609_ath_$TestInstance
-TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log
-}
+TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log
 
 # cleanup(){
 # echo "_________Cleaning all processes and directories left behind by this jenkins instance____________"
