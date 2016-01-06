@@ -1,8 +1,7 @@
 #! /bin/bash
 
-# Description: Test script for jenkins, takes as input : User, Jenkins version, Tomcat Port on which Jenkins will run, Test instance
+# Description: Test script for jenkins, takes as input : User, Jenkins version, Tomcat Port on which Jenkins will run, Test instance directory
 # Author: Aditya
-
 
 usage(){
 echo "Usage: $0 <OPTIONS>"
@@ -26,11 +25,11 @@ if [ ! -d $JENKINS_Test_DIR ]; then
 	echo 'created Jenkins Test directory'
 fi 
 
-if [ ! -d $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance ]; then
-    git -C $JENKINS_Test_DIR clone -b 1.580-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.580_ath_$TestInstance
+if [ ! -d $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance ]; then
+    git -C $JENKINS_Test_DIR clone -b 1.596-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
 else
-    rm -rf $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance
-    git -C $JENKINS_Test_DIR clone -b 1.580-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.580_ath_$TestInstance
+    rm -rf $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone -b 1.596-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
 fi
 
 }
@@ -38,27 +37,26 @@ fi
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
-if [ ! -f $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log ];then
-    	touch $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
+if [ ! -f $REPORTS_DIR/plugins_1.596_ath_reports_"$JenkinsVersion".log ];then
+        touch $REPORTS_DIR/plugins_1.596_ath_reports_"$JenkinsVersion".log
 fi
 # if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log ];then
 # 		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log
 # fi
 # mysql -u root << EOF
-# use jenkins_core_sessionIDs;
+# use jenkins_plugins_sessionIDs;
 # DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 # EOF
 
-# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
-# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
+# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
+# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
 }
 
 
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
-cd $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance
-# TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/core/*Test test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
-TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
+cd $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
+TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.596_ath_reports_"$JenkinsVersion".log
 }
 
 # cleanup(){
@@ -68,8 +66,10 @@ TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort
 # kill $(ps aux | grep -E 'nisal.*slave*' | awk '{print $2}')
 # kill $(ps aux | grep -E '/usr/lib/jvm/java.*TomcatInstance'$startupPort'*' | awk '{print $2}')
 # echo "Deleting Jenkins TMP directory"
-# cd /tmp
-# rm -rf $(ls -la | grep nisal | awk '{print $9}')
+# cd /tmp/
+# rm -rf tmp*
+# rm -rf $(ls -la | grep -E 'nisal.*slave*' | awk '{print $9}')
+# rm -rf $(ls -la | grep -E '*nisal*.*._.*' | awk '{print $9}')
 # echo "done"
 # }
 
@@ -77,11 +77,11 @@ while getopts ":u:v:s:i:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
-		v) JenkinsVersion=${OPTARG}
-		;;
+        v) JenkinsVersion=${OPTARG}
+        ;;
         s) startupPort=${OPTARG}
-		;;
-		i) TestInstance=${OPTARG}
+        ;;
+        i) TestInstance=${OPTARG}
         # ;;
         # d) DatabaseSessionIDsVersion=${OPTARG}
         esac
@@ -98,6 +98,7 @@ fi
 downloadJenkinsTestSuite
 
 gatherTestReports
+
 
 runJenkinsTests
 
