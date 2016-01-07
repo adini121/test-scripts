@@ -78,7 +78,7 @@ test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsV
 # echo "done"
 # }
 
-while getopts ":u:v:s:i:" i; do
+while getopts ":u:v:s:i:d:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
