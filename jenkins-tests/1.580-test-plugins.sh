@@ -41,24 +41,30 @@ REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
 if [ ! -f $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log ];then
     	touch $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
 fi
-# if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log ];then
-# 		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log
-# fi
-# mysql -u root << EOF
-# use jenkins_core_sessionIDs;
-# DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
-# EOF
+if [ ! -f $REPORTS_DIR/"$currentTime"_plugins_1.580_BrowserIdList_"$JenkinsVersion".log ];then
+		touch $REPORTS_DIR/"$currentTime"_plugins_1.580_BrowserIdList_"$JenkinsVersion".log
+fi
+mysql -u root << EOF
+use jenkins_plugins_sessionIDs;
+DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
+EOF
+cap.setCapability("apikey", "c717c5b3-a307-461e-84ea-1232d44cde89");
+                cap.setCapability("email", "test@testfabrik.com");
+sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
+sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_plugins_1.580_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
 
-# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
-# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
 }
 
 
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance
-# TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/core/*Test test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
-TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
+TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ \
+mvn -Dmaven.test.skip=false -Dtest=BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
+CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
+DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
+EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,ScriptlerPluginTest,SubversionPluginNoDockerTest \
+test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
 }
 
 # cleanup(){
