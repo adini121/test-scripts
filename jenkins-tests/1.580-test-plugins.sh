@@ -11,7 +11,7 @@ echo "  -u <UID>                user name (e.g. adi)"
 echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
 echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
-# echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
+echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
 
@@ -48,8 +48,6 @@ mysql -u root << EOF
 use jenkins_plugins_sessionIDs;
 DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 EOF
-cap.setCapability("apikey", "c717c5b3-a307-461e-84ea-1232d44cde89");
-                cap.setCapability("email", "test@testfabrik.com");
 sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
 sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_plugins_1.580_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
 
@@ -63,7 +61,8 @@ TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort
 mvn -Dmaven.test.skip=false -Dtest=BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
 CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
 DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
-EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,ScriptlerPluginTest,SubversionPluginNoDockerTest \
+EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,ScriptlerPluginTest,SubversionPluginNoDockerTest,\
+MatrixAuthPluginTest,MailerPluginTest#send_mail_for_failed_build,ViolationsPluginTest#freestyle,NodeLabelParameterPluginTest#build_on_a_particular_slave \
 test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
 }
 
@@ -88,14 +87,14 @@ while getopts ":u:v:s:i:" i; do
         s) startupPort=${OPTARG}
 		;;
 		i) TestInstance=${OPTARG}
-        # ;;
-        # d) DatabaseSessionIDsVersion=${OPTARG}
+        ;;
+        d) DatabaseSessionIDsVersion=${OPTARG}
         esac
 done
 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $DatabaseSessionIDsVersion == "" ]]; then
         usage
 fi
 
