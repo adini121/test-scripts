@@ -62,7 +62,7 @@ mvn -Dmaven.test.skip=false -Dtest=BuildTimeoutPluginTest,JobParameterSummaryPlu
 CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
 DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,ScriptlerPluginTest,SubversionPluginNoDockerTest,\
-MatrixAuthPluginTest,MailerPluginTest#send_mail_for_failed_build,ViolationsPluginTest#freestyle,NodeLabelParameterPluginTest#build_on_a_particular_slave \
+MatrixAuthPluginTest,MailerPluginTest,ViolationsPluginTest,NodeLabelParameterPluginTest \
 test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
 }
 
