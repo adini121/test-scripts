@@ -37,10 +37,11 @@ fi
 
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
-REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
+REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Plugins"
 if [ ! -f $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log ];then
     	touch $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
 fi
+
 if [ ! -f $REPORTS_DIR/"$currentTime"_plugins_1.580_BrowserIdList_"$JenkinsVersion".log ];then
 		touch $REPORTS_DIR/"$currentTime"_plugins_1.580_BrowserIdList_"$JenkinsVersion".log
 fi
@@ -57,14 +58,13 @@ sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new File
 
 
 runJenkinsTests(){
-echo "..............................................runJenkinsTests.............................................."
+echo "..............................................run Jenkins Tests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ \
 mvn -Dmaven.test.skip=false -Dtest=BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
 CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
 DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
-EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,ScriptlerPluginTest,SubversionPluginNoDockerTest,\
-MatrixAuthPluginTest,MailerPluginTest,ViolationsPluginTest,NodeLabelParameterPluginTest \
+EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
 test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.580_ath_reports_"$JenkinsVersion".log
 }
 
