@@ -1,15 +1,15 @@
 #! /bin/bash
 
-# Description: Test script for jenkins, takes as input : User, Jenkins version, Tomcat Port on which Jenkins will run, Test instance directory
+# Description: Test script for jenkins, takes as input : Jenkins version, Tomcat Port on which Jenkins will run, Test instance directory
 # Author: Aditya
 
 usage(){
 echo "Usage: $0 <OPTIONS>"
 echo "Required options:"
-echo "  -u <UID>                user name (e.g. adi)"
 echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
 echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
+echo "  -c <CommitHash>         Bedrock tests CommitHash"
 # echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
@@ -17,7 +17,7 @@ exit 1
 downloadJenkinsTestSuite(){
 echo "..............................................createJenkinsHome.............................................."
 
-JENKINS_Test_DIR="/home/$user/jenkinsTests"
+JENKINS_Test_DIR="/home/nisal/jenkinsTests"
 
 if [ ! -d $JENKINS_Test_DIR ]; then
 	echo 'no jenkins Test directory found.'
@@ -26,19 +26,22 @@ if [ ! -d $JENKINS_Test_DIR ]; then
 fi 
 
 if [ ! -d $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance ]; then
-    git -C $JENKINS_Test_DIR clone -b 1.596-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone -b master --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
 else
     rm -rf $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
-    git -C $JENKINS_Test_DIR clone -b 1.596-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone -b master --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
 fi
 
+git -C $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance checkout $CommitHash
+git -C $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance checkout -b cherry-branch
+git -C $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance cherry-pick 3b0ccb5f774fc985237bdc6c775e7f1d80134f3a
 }
 
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
-if [ ! -f $REPORTS_DIR/plugins_1.596_ath_reports_"$JenkinsVersion".log ];then
-        touch $REPORTS_DIR/plugins_1.596_ath_reports_"$JenkinsVersion".log
+if [ ! -f $REPORTS_DIR/plugins_1.596_ath_reports_$CommitHash_"$JenkinsVersion".log ];then
+        touch $REPORTS_DIR/plugins_1.596_ath_reports_$CommitHash_"$JenkinsVersion".log
 fi
 # if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log ];then
 # 		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log
@@ -47,16 +50,19 @@ fi
 # use jenkins_plugins_sessionIDs;
 # DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 # EOF
-
-# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
-# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
+TestsDir=$JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance
+sed -i 's|\"record\", true|\"record\", false|g' $TestsDir/FallbackConfig.
+sed -i 's|\"extract\", true|\"extract\", false|g' $TestsDir/FallbackConfig.java
+#sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
+#sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
 }
 
 
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
-TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.596_ath_reports_"$JenkinsVersion".log
+TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test \
+test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.596_ath_reports_$CommitHash_"$JenkinsVersion".log
 }
 
 # cleanup(){
@@ -73,15 +79,15 @@ TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort
 # echo "done"
 # }
 
-while getopts ":u:v:s:i:" i; do
+while getopts ":v:s:i:c:" i; do
         case "${i}" in
-        u) user=${OPTARG}
-        ;;
         v) JenkinsVersion=${OPTARG}
         ;;
         s) startupPort=${OPTARG}
         ;;
         i) TestInstance=${OPTARG}
+        ;;
+        c) CommitHash=${OPTARG}
         # ;;
         # d) DatabaseSessionIDsVersion=${OPTARG}
         esac
@@ -89,7 +95,7 @@ done
 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" ]]; then
+if [[ $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $CommitHash == "" ]]; then
         usage
 fi
 
@@ -98,7 +104,6 @@ fi
 downloadJenkinsTestSuite
 
 gatherTestReports
-
 
 runJenkinsTests
 
