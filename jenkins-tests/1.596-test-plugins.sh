@@ -40,8 +40,8 @@ git -C $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance cherry-pick 3b0ccb5f774
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
-if [ ! -f $REPORTS_DIR/plugins_1.596_ath_reports_$CommitHash_"$JenkinsVersion".log ];then
-        touch $REPORTS_DIR/plugins_1.596_ath_reports_$CommitHash_"$JenkinsVersion".log
+if [ ! -f $REPORTS_DIR/plugins_1.596_ath_reports_"$CommitHash"_"$JenkinsVersion".log ];then
+        touch $REPORTS_DIR/plugins_1.596_ath_reports_"$CommitHash"_"$JenkinsVersion".log
 fi
 # if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log ];then
 # 		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log
@@ -62,7 +62,7 @@ runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test \
-test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.596_ath_reports_$CommitHash_"$JenkinsVersion".log
+test 2>&1 | tee $REPORTS_DIR/plugins_1.596_ath_reports_"$CommitHash"_"$JenkinsVersion".log
 }
 
 # cleanup(){
