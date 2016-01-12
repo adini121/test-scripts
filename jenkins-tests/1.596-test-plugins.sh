@@ -51,7 +51,7 @@ fi
 # DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 # EOF
 TestsDir=$JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance
-sed -i 's|\"record\", true|\"record\", false|g' $TestsDir/FallbackConfig.
+sed -i 's|\"record\", true|\"record\", false|g' $TestsDir/FallbackConfig.java
 sed -i 's|\"extract\", true|\"extract\", false|g' $TestsDir/FallbackConfig.java
 #sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
 #sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
