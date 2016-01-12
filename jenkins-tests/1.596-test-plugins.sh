@@ -8,8 +8,8 @@ echo "Usage: $0 <OPTIONS>"
 echo "Required options:"
 echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
-echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
-echo "  -c <CommitHash>         Bedrock tests CommitHash"
+echo " 	-i <TestInstance>       Jenkins Test Repository Instance (e.g. first, second, third)	"
+echo "  -c <CommitHash>         Jenkins tests CommitHash"
 # echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
@@ -26,10 +26,10 @@ if [ ! -d $JENKINS_Test_DIR ]; then
 fi 
 
 if [ ! -d $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance ]; then
-    git -C $JENKINS_Test_DIR clone -b master --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
 else
     rm -rf $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
-    git -C $JENKINS_Test_DIR clone -b master --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone git@github.com:adini121/acceptance-test-harness.git Jenkins_1.596_ath_$TestInstance
 fi
 
 git -C $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance checkout $CommitHash
