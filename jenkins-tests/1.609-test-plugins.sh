@@ -56,7 +56,14 @@ fi
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_1.609_ath_$TestInstance
-TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/plugins/*Test test 2>&1 | tee $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log
+TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn \
+-Dmaven.test.skip=false -Dtest=BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
+CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
+DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
+EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
+MatrixAuthPluginTest,MailerPluginTest,ViolationsPluginTest,NodeLabelParameterPluginTest,AntPluginTest,\
+UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,CompressArtifactsPluginTest,MavenPluginTest,\
+OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log
 }
 # cleanup(){
 # echo "_________Cleaning all processes and directories left behind by this jenkins instance____________"
