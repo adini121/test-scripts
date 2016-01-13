@@ -67,8 +67,8 @@ TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort
 CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
 DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
-MatrixAuthPluginTest,MailerPluginTest,ViolationsPluginTest,NodeLabelParameterPluginTest,AntPluginTest,\
-UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,CompressArtifactsPluginTest,MavenPluginTest,\
+MailerPluginTest,ViolationsPluginTest,NodeLabelParameterPluginTest,AntPluginTest,\
+UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,CompressArtifactsPluginTest,\
 OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.596_ath_reports_"$CommitHash"_"$JenkinsVersion".log
 }
 
