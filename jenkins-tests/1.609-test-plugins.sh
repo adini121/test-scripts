@@ -11,7 +11,7 @@ echo "  -u <UID>                user name (e.g. adi)"
 echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
 echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
-# echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
+echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
 
@@ -36,22 +36,25 @@ fi
 
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
-REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
+REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Plugins"
 if [ ! -f $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log ];then
     	touch $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log
 fi
-# if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log ];then
-# 		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log
-# fi
-# mysql -u root << EOF
-# use jenkins_plugins_sessionIDs;
-# DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
-# EOF
+if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_plugins_1.609_"$JenkinsVersion".log ];then
+		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_plugins_1.609_"$JenkinsVersion".log
+fi
+mysql -u root << EOF
+use jenkins_plugins_sessionIDs;
+DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
+EOF
+TestsDir="$JENKINS_Test_DIR/Jenkins_1.609_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance"
+sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
+sed -i 's|\"extract\", false|\"extract\", true|g' $TestsDir/FallbackConfig.java
+sed -i 's|jenkins_core_sessionIDs|jenkins_plugins_sessionIDs|g' $TestsDir/utils/SeleniumGridConnection.java
+sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
+sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_plugins_1.609_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
 
-# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.609_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
-# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.609_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
 }
-
 
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
@@ -61,7 +64,7 @@ TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort
 CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
 DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
-MailerPluginTest,ViolationsPluginTest,NodeLabelParameterPluginTest,AntPluginTest,\
+MailerPluginTest,ViolationsPluginTest,\
 UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,CompressArtifactsPluginTest,\
 OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log
 }
@@ -77,23 +80,23 @@ OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.609_ath_reports_"$Jen
 # echo "done"
 # }
 
-while getopts ":u:v:s:i:" i; do
-        case "${i}" in
-        u) user=${OPTARG}
-        ;;
-		v) JenkinsVersion=${OPTARG}
-		;;
-        s) startupPort=${OPTARG}
-		;;
-		i) TestInstance=${OPTARG}
-        # ;;
-        # d) DatabaseSessionIDsVersion=${OPTARG}
-        esac
+while getopts ":u:v:s:i:d:" i; do
+    case "${i}" in
+    u) user=${OPTARG}
+    ;;
+    v) JenkinsVersion=${OPTARG}
+	;;
+    s) startupPort=${OPTARG}
+    ;;
+    i) TestInstance=${OPTARG}
+    ;;
+    d) DatabaseSessionIDsVersion=${OPTARG}
+    esac
 done
 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $DatabaseSessionIDsVersion == "" ]]; then
         usage
 fi
 
