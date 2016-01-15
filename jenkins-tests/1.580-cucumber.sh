@@ -61,7 +61,7 @@ runJenkinsTests(){
 echo "..............................................run Jenkins Tests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ \
-mvn -Dcucumber.test test 2>&1 | tee $REPORTS_DIR/"$currentTime"_Cucumber_1.580_ath_reports_"$JenkinsVersion".log
+mvn -Dcucumber.test=features/ test 2>&1 | tee $REPORTS_DIR/"$currentTime"_Cucumber_1.580_ath_reports_"$JenkinsVersion".log
 }
 
 # cleanup(){
