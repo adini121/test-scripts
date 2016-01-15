@@ -37,8 +37,8 @@ fi
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Plugins"
-if [ ! -f $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log ];then
-    	touch $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log
+if [ ! -f $REPORTS_DIR/"$currentTime"_plugins_1.609_ath_reports_"$JenkinsVersion".log ];then
+    	touch $REPORTS_DIR/"$currentTime"_plugins_1.609_ath_reports_"$JenkinsVersion".log
 fi
 if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_plugins_1.609_"$JenkinsVersion".log ];then
 		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_plugins_1.609_"$JenkinsVersion".log
@@ -66,7 +66,7 @@ DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPlugi
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
 MailerPluginTest,ViolationsPluginTest,\
 UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,CompressArtifactsPluginTest,\
-OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.609_ath_reports_"$JenkinsVersion".log
+OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/"$currentTime"_plugins_1.609_ath_reports_"$JenkinsVersion".log
 }
 # cleanup(){
 # echo "_________Cleaning all processes and directories left behind by this jenkins instance____________"
