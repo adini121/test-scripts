@@ -49,6 +49,9 @@ fi
 # use jenkins_Cucumber_sessionIDs;
 # DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 # EOF
+TestsDir=$JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance
+sed -i 's|\"record\", true|\"record\", false|g' $TestsDir/FallbackConfig.java
+sed -i 's|\"extract\", true|\"extract\", false|g' $TestsDir/FallbackConfig.java
 # gridConfigFile="$JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java"
 # sed -i 's|jenkins_core_sessionIDs|jenkins_Cucumber_sessionIDs|g' $gridConfigFile
 # sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $gridConfigFile
