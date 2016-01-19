@@ -56,6 +56,7 @@ cat > $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py << EOF
 
 """ Print sessionID to database and file """
 import MySQLdb
+import pytest
 from time import gmtime, strftime
 @pytest.fixture(autouse=True)
 def session_id(mozwebqa):
