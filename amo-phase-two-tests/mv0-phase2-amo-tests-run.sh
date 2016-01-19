@@ -49,6 +49,7 @@ mysql -u root << EOF
 use phase_two_amo_sids;
 DROP TABLE IF EXISTS sessionids_mv0_$AMOGitTag;
 EOF
+echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 touch $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py
 chmod 755 $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py 
 cat > $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py << EOF
@@ -85,6 +86,7 @@ current_time = strftime("%Y-%m-%d %H:%M")
     finally:
         conn.close()
 EOF
+echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 sleep 2
 cat $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py >> $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
 sleep 2
