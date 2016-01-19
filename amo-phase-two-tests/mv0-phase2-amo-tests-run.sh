@@ -107,7 +107,7 @@ tests/desktop/test_homepage.py::TestHome::test_addons_author_link \
 tests/desktop/test_homepage.py::TestHome::test_that_checks_explore_side_navigation \
 tests/desktop/test_homepage.py::TestHome::test_that_clicking_see_all_extensions_link_works \
 tests/desktop/test_homepage.py::TestHome::test_that_checks_all_categories_side_navigation \
-tests/desktop/test_homepage.py:2:TestHome::test_that_checks_other_applications_menu \
+tests/desktop/test_homepage.py::TestHome::test_that_checks_other_applications_menu \
 tests/desktop/test_layout.py::TestAmoLayout::test_other_applications_thunderbird \
 tests/desktop/test_layout.py::TestAmoLayout::test_that_checks_amo_logo_text_layout_and_title \
 tests/desktop/test_layout.py::TestAmoLayout::test_that_clicking_the_amo_logo_loads_home_page \
