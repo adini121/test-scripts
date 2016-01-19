@@ -22,7 +22,7 @@ echo "AMO dir will be phase2_test_mv0_$AMOInstance"
 if [ -d $AMOBaseDir/phase2_test_mv0_$AMOInstance ]; then
 	rm -rf $AMOBaseDir/phase2_test_mv0_$AMOInstance phase2_test_mv0_$AMOInstance
 fi
-git -C $AMOBaseDir clone git@github.com:adini121/Addon-Tests.git phase2_test_mv0_$AMOInstance
+git -C $AMOBaseDir clone -b master --single-branch git@github.com:adini121/Addon-Tests.git phase2_test_mv0_$AMOInstance
 git -C $AMOBaseDir/phase2_test_mv0_$AMOInstance checkout $CommitHash
 git -C $AMOBaseDir/phase2_test_mv0_$AMOInstance checkout -b testing-branch 
 }
@@ -49,7 +49,7 @@ mysql -u root << EOF
 use phase_two_amo_sids;
 DROP TABLE IF EXISTS sessionids_mv0_$AMOGitTag;
 EOF
-cat $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbsettings.py >> $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
+cat $CURRENT_DIR/dbsettings.py >> $CURRENT_DIR/conftest.py
 sleep 2
 sed -i 's|test_session_ids|sessionids_mv0_'$AMOGitTag'|g' $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
 sed -i 's|/home/nisal/python.txt|'$REPORTS_DIR'/AMO_BrowserIdList_mv0_'$AMOGitTag'.log|g' $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
@@ -72,7 +72,6 @@ py.test  -r=fsxXR --verbose --baseurl=http://134.96.235.47:$AMOPort --host 134.9
 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=email:test@testfabrik.com \
 --capability=record:false --capability=extract:false --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 \
 --credentials=credentials.yaml --platform=MAC --destructive \
-tests/desktop/ \
 tests/desktop/test_collections.py::TestCollections::test_featured_tab_is_highlighted_by_default \
 tests/desktop/test_collections.py::TestCollections::test_create_and_delete_collection \
 tests/desktop/test_collections.py::TestCollections::test_user_my_collections_page \
