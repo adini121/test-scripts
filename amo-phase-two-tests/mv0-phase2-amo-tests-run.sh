@@ -49,7 +49,7 @@ mysql -u root << EOF
 use phase_two_amo_sids;
 DROP TABLE IF EXISTS sessionids_mv0_$AMOGitTag;
 EOF
-cat $CURRENT_DIR/dbsettings.py >> $CURRENT_DIR/conftest.py
+cat $CURRENT_DIR/dbsettings.py >> $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
 sleep 2
 sed -i 's|test_session_ids|sessionids_mv0_'$AMOGitTag'|g' $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
 sed -i 's|/home/nisal/python.txt|'$REPORTS_DIR'/AMO_BrowserIdList_mv0_'$AMOGitTag'.log|g' $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
