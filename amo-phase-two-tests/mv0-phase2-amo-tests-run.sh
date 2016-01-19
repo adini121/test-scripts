@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS sessionids_mv0_$AMOGitTag;
 EOF
 touch $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py
 chmod 755 $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py 
-cat $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py << EOF
+cat > $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py << EOF
 
 """ Print sessionID to database and file """
 import MySQLdb
