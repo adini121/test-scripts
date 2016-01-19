@@ -70,7 +70,7 @@ sleep 2
 runAMOtests(){
 py.test  -r=fsxXR --verbose --baseurl=http://134.96.235.47:$AMOPort --host 134.96.235.159 --port 1235 \
 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=email:test@testfabrik.com \
---capability=record:false --capability=extract:false --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 \
+--capability=record:true --capability=extract:false --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 \
 --credentials=credentials.yaml --platform=MAC --destructive \
 tests/desktop/test_collections.py::TestCollections::test_featured_tab_is_highlighted_by_default \
 tests/desktop/test_collections.py::TestCollections::test_create_and_delete_collection \
