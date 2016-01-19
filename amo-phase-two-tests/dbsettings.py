@@ -10,7 +10,7 @@ current_time = strftime("%Y-%m-%d %H:%M")
         conn = MySQLdb.connect(host='localhost',
                                user='root',
                                passwd='',
-                               db='amo_sessionIDs')
+                               db='phase_two_amo_sids')
 
         c = conn.cursor()
         tblQuery = """CREATE TABLE IF NOT EXISTS test_session_ids (id int unsigned auto_increment not NULL,
