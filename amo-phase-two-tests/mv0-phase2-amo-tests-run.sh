@@ -49,7 +49,44 @@ mysql -u root << EOF
 use phase_two_amo_sids;
 DROP TABLE IF EXISTS sessionids_mv0_$AMOGitTag;
 EOF
-cat $CURRENT_DIR/dbsettings.py >> $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
+touch $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py
+chmod 755 $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py 
+cat $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py << EOF
+
+""" Print sessionID to database and file """
+import MySQLdb
+from time import gmtime, strftime
+current_time = strftime("%Y-%m-%d %H:%M")
+    print('Current time is: {}'.format(current_time))
+    """ Connect to MySQL database """
+    try:
+        conn = MySQLdb.connect(host='localhost',
+                               user='root',
+                               passwd='',
+                               db='phase_two_amo_sids')
+
+        c = conn.cursor()
+        tblQuery = """CREATE TABLE IF NOT EXISTS test_session_ids (id int unsigned auto_increment not NULL,
+            session_id VARCHAR(60) not NULL,
+            date_created VARCHAR(100) not NULL,
+            primary key(id))"""
+        c.execute(tblQuery)
+        print('............Successfully created table .......')
+        insQuery = """insert into test_session_ids (session_id, date_created) values ('%s', '%s')"""
+        # insQuery = """insert into test_session_ids (session_id, date_created) values ('whatever', 'whatever')"""
+        c = conn.cursor()
+        c.execute("insert into test_session_ids (session_id, date_created) values (%s, %s)", (str_session_id, current_time))
+        # c.execute(insQuery)
+        print('............Successfully ADDED to table .......')
+        conn.commit()
+    except:
+        print ('UNABLE TO PERFORM DATABASE OPERATION')
+
+    finally:
+        conn.close()
+EOF
+sleep 2
+cat $AMOBaseDir/phase2_test_mv0_$AMOInstance/dbconftest.py >> $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
 sleep 2
 sed -i 's|test_session_ids|sessionids_mv0_'$AMOGitTag'|g' $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
 sed -i 's|/home/nisal/python.txt|'$REPORTS_DIR'/AMO_BrowserIdList_mv0_'$AMOGitTag'.log|g' $AMOBaseDir/phase2_test_mv0_$AMOInstance/conftest.py
