@@ -94,7 +94,7 @@ def session_id(mozwebqa):
     finally:
         conn.close()
 EOF
-echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+
 sleep 2
 cat $AMOBaseDir/phase2_test_mv1_$AMOInstance/dbconftest.py >> $AMOBaseDir/phase2_test_mv1_$AMOInstance/conftest.py
 sleep 2

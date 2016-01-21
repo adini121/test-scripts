@@ -44,7 +44,7 @@ if [ ! -f $REPORTS_DIR/"$currentTime"_BedrockTests_exp_mv2_"$BedrockGitTag".log 
 	touch $REPORTS_DIR/"$currentTime"_BedrockTests_exp_mv2_"$BedrockGitTag".log
 fi
 
-if [ ! -f $REPORTS_DIR/"$currentTime"_BedrockBrowserIdList_exp_mv2_"$BedrockGitTag".log ];then
+if [ ! -f $REPORTS_DIR/"$currentTime" "$BedrockGitTag".log ];then
     touch $REPORTS_DIR/"$currentTime"_BedrockBrowserIdList_exp_mv2_"$BedrockGitTag".log
 fi
 }

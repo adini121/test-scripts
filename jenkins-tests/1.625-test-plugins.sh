@@ -40,18 +40,19 @@ REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
 if [ ! -f $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log ];then
     	touch $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
 fi
-# if [ ! -f $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log ];then
-# 		touch $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log
-# fi
-# mysql -u root << EOF
-# use jenkins_plugins_sessionIDs;
-# DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
-# EOF
-
-# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
-# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_BrowserIdList_'$JenkinsVersion'.log", true);|g' $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java
+if [ ! -f $REPORTS_DIR/plugins_1.625_ath_BrowserIdList_"$JenkinsVersion".log ];then
+		touch $REPORTS_DIR/plugins_1.625_ath_BrowserIdList_"$JenkinsVersion".log
+fi
+mysql -u root << EOF
+use jenkins_plugins_sessionIDs;
+DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
+EOF
+TestDir="$JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance"
+sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
+sed -i 's|\"extract\", false|\"extract\", true|g' $TestsDir/FallbackConfig.java
+sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
+sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/plugins_1.625_ath_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
 }
-
 
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
@@ -61,8 +62,9 @@ TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort
 CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
 DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
-MailerPluginTest,ViolationsPluginTest, test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
+MailerPluginTest,ViolationsPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
 }
+
 # cleanup(){
 # echo "_________Cleaning all processes and directories left behind by this jenkins instance____________"
 # sleep 5
@@ -79,13 +81,13 @@ while getopts ":u:v:s:i:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
-		v) JenkinsVersion=${OPTARG}
-		;;
+        v) JenkinsVersion=${OPTARG}
+        ;;
         s) startupPort=${OPTARG}
-		;;
-		i) TestInstance=${OPTARG}
-        # ;;
-        # d) DatabaseSessionIDsVersion=${OPTARG}
+        ;;
+        i) TestInstance=${OPTARG}
+        ;;
+        d) DatabaseSessionIDsVersion=${OPTARG}
         esac
 done
 

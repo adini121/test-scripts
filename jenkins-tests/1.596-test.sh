@@ -75,17 +75,17 @@ TYPE=existing BROWSER=seleniumgrid JENKINS_URL=http://134.96.235.47:$startupPort
 # }
 
 while getopts ":u:v:s:i:d:" i; do
-        case "${i}" in
-        u) user=${OPTARG}
-        ;;
+    case "${i}" in
+    u) user=${OPTARG}
+    ;;
 	v) JenkinsVersion=${OPTARG}
 	;;
-        s) startupPort=${OPTARG}
+    s) startupPort=${OPTARG}
 	;;
 	i) TestInstance=${OPTARG}
-        ;;
-        d) DatabaseSessionIDsVersion=${OPTARG}
-        esac
+    ;;
+    d) DatabaseSessionIDsVersion=${OPTARG}
+    esac
 done
 
 shift $((OPTIND - 1))
