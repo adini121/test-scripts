@@ -11,7 +11,7 @@ echo "  -u <UID>                user name (e.g. adi)"
 echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
 echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
-# echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
+echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
 
@@ -47,7 +47,7 @@ mysql -u root << EOF
 use jenkins_plugins_sessionIDs;
 DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 EOF
-TestDir="$JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance"
+TestsDir="$JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance"
 sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
 sed -i 's|\"extract\", false|\"extract\", true|g' $TestsDir/FallbackConfig.java
 sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
@@ -77,7 +77,7 @@ MailerPluginTest,ViolationsPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625
 # echo "done"
 # }
 
-while getopts ":u:v:s:i:" i; do
+while getopts ":u:v:s:i:d:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
@@ -93,7 +93,7 @@ done
 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $DatabaseSessionIDsVersion == "" ]]; then
         usage
 fi
 
