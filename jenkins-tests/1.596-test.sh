@@ -10,7 +10,7 @@ echo "Required options:"
 echo "  -u <UID>                user name (e.g. adi)"
 echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
-echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
+echo " 	-i <TestInstance>	Jenkins Test Repository Instance (e.g. first, second, third)	"
 echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
@@ -57,7 +57,7 @@ sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new File
 runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
-TYPE=existing BROWSER=seleniumgrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/core/*Test test 2>&1 | tee $REPORTS_DIR/"$currentTime"_BrowserIdList_"$JenkinsVersion".log
+TYPE=existing BROWSER=seleniumgrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn -Dtest=**/core/*Test test 2>&1 | tee $REPORTS_DIR/core_1.596_ath_reports_"$JenkinsVersion".log
 }
 
 # cleanup(){
@@ -78,11 +78,11 @@ while getopts ":u:v:s:i:d:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
-		v) JenkinsVersion=${OPTARG}
-		;;
+	v) JenkinsVersion=${OPTARG}
+	;;
         s) startupPort=${OPTARG}
-		;;
-		i) TestInstance=${OPTARG}
+	;;
+	i) TestInstance=${OPTARG}
         ;;
         d) DatabaseSessionIDsVersion=${OPTARG}
         esac
