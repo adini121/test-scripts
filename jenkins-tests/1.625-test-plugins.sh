@@ -48,6 +48,7 @@ use jenkins_plugins_sessionIDs;
 DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 EOF
 TestsDir="$JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance"
+sed -i 's|jenkins_core_sessionIDs|jenkins_plugins_sessionIDs|g' $TestsDir/utils/SeleniumGridConnection.java
 sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
 sed -i 's|\"extract\", false|\"extract\", true|g' $TestsDir/FallbackConfig.java
 sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
