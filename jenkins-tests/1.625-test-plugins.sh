@@ -36,7 +36,7 @@ fi
 
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
-REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
+REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Plugins"
 if [ ! -f $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log ];then
     	touch $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
 fi
