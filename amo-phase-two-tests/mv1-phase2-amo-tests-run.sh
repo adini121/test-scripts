@@ -100,7 +100,7 @@ cat $AMOBaseDir/phase2_test_mv1_$AMOInstance/dbconftest.py >> $AMOBaseDir/phase2
 sleep 2
 sed -i 's|test_session_ids|sessionids_mv1_'$AMOGitTag'|g' $AMOBaseDir/phase2_test_mv1_$AMOInstance/conftest.py
 sed -i 's|/home/nisal/python.txt|'$REPORTS_DIR'/AMO_BrowserIdList_mv1_'$AMOGitTag'.log|g' $AMOBaseDir/phase2_test_mv1_$AMOInstance/conftest.py
-cp $CURRENT_DIR/variables.json $AMOBaseDir/phase2_test_mv1_$AMOInstance/variables.json
+cp $CURRENT_DIR/amo_variables.json $AMOBaseDir/phase2_test_mv1_$AMOInstance/variables.json
 }
 
 configureVirtualenv(){
