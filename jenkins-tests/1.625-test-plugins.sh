@@ -3,7 +3,8 @@
 # Description: Test script for jenkins, takes as input : User, Jenkins version, Tomcat Port on which Jenkins will run, Test instance
 # Author: Aditya
 
-
+# Checklist:
+# Jenkins commitHash,getopts,case,call to usage function,usage function options,
 usage(){
 echo "Usage: $0 <OPTIONS>"
 echo "Required options:"
@@ -11,7 +12,8 @@ echo "  -u <UID>                user name (e.g. adi)"
 echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
 echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
-echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
+echo "  -c <CommitHash>         Jenkins tests CommitHash"
+# echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
 
@@ -27,11 +29,15 @@ if [ ! -d $JENKINS_Test_DIR ]; then
 fi
 
 if [ ! -d $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance ]; then
-    git -C $JENKINS_Test_DIR clone -b 1.625-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.625_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone git@github.com:adini121/acceptance-test-harness.git Jenkins_1.625_ath_$TestInstance
 else
     rm -rf $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance
-    git -C $JENKINS_Test_DIR clone -b 1.625-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.625_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone git@github.com:adini121/acceptance-test-harness.git Jenkins_1.625_ath_$TestInstance
 fi
+
+git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout $CommitHash
+git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout checkout -b cherry-branch
+git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout cherry-pick 3b0ccb5f774fc985237bdc6c775e7f1d80134f3a
 }
 
 gatherTestReports(){
@@ -48,11 +54,12 @@ use jenkins_plugins_sessionIDs;
 DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 EOF
 TestsDir="$JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance"
-sed -i 's|jenkins_core_sessionIDs|jenkins_plugins_sessionIDs|g' $TestsDir/utils/SeleniumGridConnection.java
-sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
-sed -i 's|\"extract\", false|\"extract\", true|g' $TestsDir/FallbackConfig.java
-sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
-sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/plugins_1.625_ath_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
+# sed -i 's|jenkins_core_sessionIDs|jenkins_plugins_sessionIDs|g' $TestsDir/utils/SeleniumGridConnection.java
+sed -i 's|\"record\", true|\"record\", false|g' $TestsDir/FallbackConfig.java
+sed -i 's|\"extract\", true|\"extract\", false|g' $TestsDir/FallbackConfig.java
+sed -i 's|FIREFOX_30_WINDOWS_8_64|PHANTOMJS_198_MACOS_10.11_64|g' $TestsDir/FallbackConfig.java
+# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
+# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/plugins_1.625_ath_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
 }
 
 runJenkinsTests(){
@@ -63,7 +70,8 @@ TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort
 CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
 DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
-MailerPluginTest,ViolationsPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
+MailerPluginTest,ViolationsPluginTest,UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,CompressArtifactsPluginTest,\
+OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
 }
 
 # cleanup(){
@@ -78,7 +86,7 @@ MailerPluginTest,ViolationsPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625
 # echo "done"
 # }
 
-while getopts ":u:v:s:i:d:" i; do
+while getopts ":u:v:s:i:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
@@ -87,14 +95,14 @@ while getopts ":u:v:s:i:d:" i; do
         s) startupPort=${OPTARG}
         ;;
         i) TestInstance=${OPTARG}
-        ;;
-        d) DatabaseSessionIDsVersion=${OPTARG}
+        # ;;
+        # d) DatabaseSessionIDsVersion=${OPTARG}
         esac
 done
-
+# || $DatabaseSessionIDsVersion == "" 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $DatabaseSessionIDsVersion == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" ]]; then
         usage
 fi
 
