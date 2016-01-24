@@ -36,8 +36,8 @@ else
 fi
 
 git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout $CommitHash
-git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout checkout -b cherry-branch
-git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout cherry-pick 3b0ccb5f774fc985237bdc6c775e7f1d80134f3a
+git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout -b cherry-branch
+git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance cherry-pick 3b0ccb5f774fc985237bdc6c775e7f1d80134f3a
 }
 
 gatherTestReports(){
