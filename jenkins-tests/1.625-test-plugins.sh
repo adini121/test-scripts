@@ -86,7 +86,7 @@ OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$Jen
 # echo "done"
 # }
 
-while getopts ":u:v:s:i:" i; do
+while getopts ":u:v:s:i:c:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
@@ -95,6 +95,8 @@ while getopts ":u:v:s:i:" i; do
         s) startupPort=${OPTARG}
         ;;
         i) TestInstance=${OPTARG}
+        ;;
+        c) CommitHash=${OPTARG}
         # ;;
         # d) DatabaseSessionIDsVersion=${OPTARG}
         esac
@@ -102,7 +104,7 @@ done
 # || $DatabaseSessionIDsVersion == "" 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $CommitHash == "" ]]; then
         usage
 fi
 
