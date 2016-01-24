@@ -36,7 +36,7 @@ else
 fi
 
 git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout $CommitHash
-git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout -b cherry-pick-before-2015.11.07
+git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout -b infinity-cherry-pick-branch
 git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance cherry-pick 7348ab40ffb159c83982b18380c3d516cc99a507
 }
 
