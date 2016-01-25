@@ -43,8 +43,8 @@ git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance cherry-pick 7348ab40ffb
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Plugins"
-if [ ! -f $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log ];then
-    	touch $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
+if [ ! -f $REPORTS_DIR/plugins_1.625_ath_reports_"$CommitHash"_"$JenkinsVersion".log ];then
+    	touch $REPORTS_DIR/plugins_1.625_ath_reports_"$CommitHash"_"$JenkinsVersion".log
 fi
 if [ ! -f $REPORTS_DIR/plugins_1.625_ath_BrowserIdList_"$JenkinsVersion".log ];then
 		touch $REPORTS_DIR/plugins_1.625_ath_BrowserIdList_"$JenkinsVersion".log
@@ -71,7 +71,7 @@ CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,J
 DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
 MailerPluginTest,ViolationsPluginTest,UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,CompressArtifactsPluginTest,\
-OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
+OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$CommitHash"_"$JenkinsVersion".log
 }
 
 # cleanup(){
