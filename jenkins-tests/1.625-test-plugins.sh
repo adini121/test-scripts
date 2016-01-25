@@ -56,8 +56,8 @@ DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 EOF
 TestsDir="$JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance"
 sed -i 's|jenkins_core_sessionIDs|jenkins_plugins_sessionIDs|g' $TestsDir/utils/SeleniumGridConnection.java
-sed -i 's|\"record\", true|\"record\", false|g' $TestsDir/FallbackConfig.java
-sed -i 's|\"extract\", true|\"extract\", false|g' $TestsDir/FallbackConfig.java
+sed -i 's|\"record\", true|\"record\", true|g' $TestsDir/FallbackConfig.java
+sed -i 's|\"extract\", true|\"extract\", true|g' $TestsDir/FallbackConfig.java
 sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
 sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/plugins_1.625_ath_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
 }
@@ -87,7 +87,7 @@ OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$Com
 # }
 
 while getopts ":u:v:s:i:c:d:" i; do
-        case "${i}" in
+    case "${i}" in
         u) user=${OPTARG}
         ;;
         v) JenkinsVersion=${OPTARG}
@@ -99,11 +99,11 @@ while getopts ":u:v:s:i:c:d:" i; do
         c) CommitHash=${OPTARG}
         ;;
         d) DatabaseSessionIDsVersion=${OPTARG}
-        esac
+    esac
 done
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $CommitHash == "" || DatabaseSessionIDsVersion == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $CommitHash == "" || $DatabaseSessionIDsVersion == "" ]]; then
         usage
 fi
 
