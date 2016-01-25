@@ -13,7 +13,7 @@ echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
 echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
 echo "  -c <CommitHash>         Jenkins tests CommitHash"
-# echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
+echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
 
@@ -38,6 +38,7 @@ fi
 git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout $CommitHash
 git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout -b infinity-cherry-pick-branch
 git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance cherry-pick 7348ab40ffb159c83982b18380c3d516cc99a507
+git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance cherry-pick 89a59d4bd2a22575690bde8f1f2d4e5cb6d9056d
 }
 
 gatherTestReports(){
@@ -54,12 +55,11 @@ use jenkins_plugins_sessionIDs;
 DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 EOF
 TestsDir="$JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance"
-# sed -i 's|jenkins_core_sessionIDs|jenkins_plugins_sessionIDs|g' $TestsDir/utils/SeleniumGridConnection.java
+sed -i 's|jenkins_core_sessionIDs|jenkins_plugins_sessionIDs|g' $TestsDir/utils/SeleniumGridConnection.java
 sed -i 's|\"record\", true|\"record\", false|g' $TestsDir/FallbackConfig.java
 sed -i 's|\"extract\", true|\"extract\", false|g' $TestsDir/FallbackConfig.java
-sed -i 's|FIREFOX_30_WINDOWS_8_64|PHANTOMJS_198_MACOS_10.11_64|g' $TestsDir/FallbackConfig.java
-# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
-# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/plugins_1.625_ath_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
+sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
+sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/plugins_1.625_ath_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
 }
 
 runJenkinsTests(){
@@ -67,10 +67,10 @@ echo "..............................................runJenkinsTests.............
 cd $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn \
 -Dmaven.test.skip=false -Dtest=BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
-CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
-DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
+CoberturaPluginTest,PlotPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
+DashboardViewPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
-MailerPluginTest,ViolationsPluginTest,UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,CompressArtifactsPluginTest,\
+MailerPluginTest,ViolationsPluginTest,UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,\
 OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$CommitHash"_"$JenkinsVersion".log
 }
 
@@ -86,7 +86,7 @@ OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$Com
 # echo "done"
 # }
 
-while getopts ":u:v:s:i:c:" i; do
+while getopts ":u:v:s:i:c:d:" i; do
         case "${i}" in
         u) user=${OPTARG}
         ;;
@@ -97,14 +97,13 @@ while getopts ":u:v:s:i:c:" i; do
         i) TestInstance=${OPTARG}
         ;;
         c) CommitHash=${OPTARG}
-        # ;;
-        # d) DatabaseSessionIDsVersion=${OPTARG}
+        ;;
+        d) DatabaseSessionIDsVersion=${OPTARG}
         esac
 done
-# || $DatabaseSessionIDsVersion == "" 
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $CommitHash == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $CommitHash == "" || DatabaseSessionIDsVersion == "" ]]; then
         usage
 fi
 
