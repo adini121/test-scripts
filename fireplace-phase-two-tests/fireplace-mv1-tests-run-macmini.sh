@@ -36,19 +36,19 @@ currentTime=$(date "+%Y.%m.%d-%H.%M")
 echo "Current Time : $currentTime"
 REPORTS_DIR="/home/$USER/Dropbox/PhaseTwoTestResults/Marketplace"
 echo "Reports directory is: "$REPORTS_DIR" "
-if [ ! -f $REPORTS_DIR/FireplaceTests_mv1_"$FireplaceGit".log ];then
-	touch $REPORTS_DIR/FireplaceTests_mv1_"$FireplaceGit".log
+if [ ! -f $REPORTS_DIR/FireplaceTests_mv1_"$FireplaceGitTag".log ];then
+	touch $REPORTS_DIR/FireplaceTests_mv1_"$FireplaceGitTag".log
 fi
 
-if [ ! -f $REPORTS_DIR/Fireplace_BrowserIdList_mv1_"$FireplaceGit".log ];then
-    touch $REPORTS_DIR/Fireplace_BrowserIdList_mv1_"$FireplaceGit".log
+if [ ! -f $REPORTS_DIR/Fireplace_BrowserIdList_mv1_"$FireplaceGitTag".log ];then
+    touch $REPORTS_DIR/Fireplace_BrowserIdList_mv1_"$FireplaceGitTag".log
 fi
 }
 
 configureFireplaceTests(){
 mysql -u root << EOF
 use phase_two_fireplace_sids;
-DROP TABLE IF EXISTS sessionids_mv1_$FireplaceGit;
+DROP TABLE IF EXISTS sessionids_mv1_$FireplaceGitTag;
 EOF
 echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 touch $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance/dbconftest.py
@@ -99,8 +99,8 @@ echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 sleep 2
 cat $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance/dbconftest.py >> $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance/conftest.py
 sleep 2
-sed -i 's|test_session_ids|sessionids_mv1_'$FireplaceGit'|g' $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance/conftest.py
-sed -i 's|/home/nisal/python.txt|'$REPORTS_DIR'/Fireplace_BrowserIdList_mv1_'$FireplaceGit'.log|g' $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance/conftest.py
+sed -i 's|test_session_ids|sessionids_mv1_'$FireplaceGitTag'|g' $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance/conftest.py
+sed -i 's|/home/nisal/python.txt|'$REPORTS_DIR'/Fireplace_BrowserIdList_mv1_'$FireplaceGitTag'.log|g' $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance/conftest.py
 cp $CURRENT_DIR/credentials.yaml $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance/credentials.yaml
 }
 
@@ -148,7 +148,7 @@ done
 
 shift $((OPTIND - 1))
 
-if [[ $USER == "" || $FireplaceGit == "" || $FireplaceInstance == "" || $FireplacePort == "" || $CommitHash == "" ]]; then
+if [[ $USER == "" || $FireplaceGitTag == "" || $FireplaceInstance == "" || $FireplacePort == "" || $CommitHash == "" ]]; then
     usage
 fi
 
