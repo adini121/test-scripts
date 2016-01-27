@@ -114,10 +114,10 @@ sleep 2
 }
 
 runFireplacetests(){
-py.test -r=fsxXR --verbose --baseurl=http://134.96.235.47:$FireplacePort --host 134.96.235.159 \
---port 1235 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 
---capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --capability=email:test@testfabrik.com --capability=record:true \
---capability=extract:true --credentials=credentials.yaml --platform=MAC --destructive \
+py.test  -r=fsxXR --verbose --baseurl=http://134.96.235.47:$FireplacePort --host 134.96.235.159 --port 1235 \
+--browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=email:test@testfabrik.com \
+--capability=record:true --capability=extract:false --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 \
+--platform=MAC --destructive \
 tests/desktop/consumer_pages/test_consumers_page.py::TestConsumerPage::test_that_header_has_expected_items \
 tests/desktop/consumer_pages/test_consumers_page.py::TestConsumerPage::test_that_verifies_categories_menu \
 tests/desktop/consumer_pages/test_consumers_page.py::TestConsumerPage::test_opening_every_category_page_from_categories_menu \
