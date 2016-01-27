@@ -23,7 +23,8 @@ echo "................................installing Fireplace test code............
 echo "Fireplace dir will be phase_two_test_mv1_$FireplaceInstance"
 if [ -d $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance ]; then
 	rm -rf $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance
-fi  
+fi
+git -C $FireplaceBaseDir clone -b master --single-branch git@github.com:adini121/marketplace-tests.git phase_two_test_mv1_$FireplaceInstance  
 git -C $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance checkout $CommitHash
 git -C $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance checkout -b testing-branch
 }
