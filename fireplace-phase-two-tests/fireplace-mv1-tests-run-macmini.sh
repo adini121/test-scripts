@@ -21,12 +21,9 @@ installTestingCode(){
 echo "................................installing Fireplace test code......................................."
 
 echo "Fireplace dir will be phase_two_test_mv1_$FireplaceInstance"
-	if [ ! -d $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance ]; then
-		rm -rf $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance
-        git -C $FireplaceBaseDir clone -b master --single-branch git@github.com:adini121/marketplace-tests.git phase_two_test_mv1_$FireplaceInstance
-	else 
-        git -C $FireplaceBaseDir clone -b master --single-branch git@github.com:adini121/marketplace-tests.git phase_two_test_mv1_$FireplaceInstance
-    fi    
+if [ -d $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance ]; then
+	rm -rf $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance
+fi  
 git -C $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance checkout $CommitHash
 git -C $FireplaceBaseDir/phase_two_test_mv1_$FireplaceInstance checkout -b testing-branch
 }
@@ -36,8 +33,8 @@ currentTime=$(date "+%Y.%m.%d-%H.%M")
 echo "Current Time : $currentTime"
 REPORTS_DIR="/home/$USER/Dropbox/PhaseTwoTestResults/Marketplace"
 echo "Reports directory is: "$REPORTS_DIR" "
-if [ ! -f $REPORTS_DIR/FireplaceTests_mv1_"$FireplaceGitTag".log ];then
-	touch $REPORTS_DIR/FireplaceTests_mv1_"$FireplaceGitTag".log
+if [ ! -f $REPORTS_DIR/fireplaceTests_mv1_"$FireplaceGitTag".log ];then
+	touch $REPORTS_DIR/fireplaceTests_mv1_"$FireplaceGitTag".log
 fi
 
 if [ ! -f $REPORTS_DIR/Fireplace_BrowserIdList_mv1_"$FireplaceGitTag".log ];then
@@ -129,7 +126,7 @@ tests/desktop/consumer_pages/test_details_page.py::TestDetailsPage::test_that_re
 tests/desktop/consumer_pages/test_search.py::TestSearching::test_that_searching_with_empty_field_using_submit_returns_results \
 tests/desktop/consumer_pages/test_search.py::TestSearching::test_that_the_search_tag_is_present_in_the_search_results \
 tests/desktop/consumer_pages/test_search.py::TestSearching::test_that_checks_search_with_foreign_characters \
-2>&1 | tee $REPORTS_DIR/"$currentTime"_fireplaceTests_mv1_"$FireplaceGitTag".log
+2>&1 | tee $REPORTS_DIR/FireplaceTests_mv1_"$FireplaceGitTag".log
 }
 
 while getopts ":u:t:m:p:c:" i; do
