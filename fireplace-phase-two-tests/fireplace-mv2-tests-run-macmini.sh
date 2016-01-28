@@ -118,10 +118,18 @@ py.test  -r=fsxXR --verbose --baseurl=http://134.96.235.47:$FireplacePort --host
 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=email:test@testfabrik.com \
 --capability=record:true --capability=extract:false --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 \
 --platform=MAC --destructive \
-tests/desktop/consumer_pages/test_home_page.py \
-tests/desktop/consumer_pages/test_details_page.py \
-tests/desktop/consumer_pages/test_search.py \
-2>&1 | tee $REPORTS_DIR/FireplaceTests_mv2_"$FireplaceGitTag".log
+tests/desktop/consumer_pages/test_details_page::TestDetailsPage::test_that_application_page_contains_proper_objects \
+tests/desktop/consumer_pages/test_details_page::TestDetailsPage::test_that_reports_abuse_as_anonymous_user \
+tests/desktop/consumer_pages/test_home_page::TestConsumerPage::test_that_promo_module_is_visible \
+tests/desktop/consumer_pages/test_home_page::TestConsumerPage::test_that_header_has_expected_items \
+tests/desktop/consumer_pages/test_home_page::TestConsumerPage::test_that_verifies_categories_menu \
+tests/desktop/consumer_pages/test_home_page::TestConsumerPage::test_opening_every_category_page_from_categories_menu \
+tests/desktop/consumer_pages/test_home_page::TestConsumerPage::test_that_verifies_nav_menu_tabs \
+tests/desktop/consumer_pages/test_search::TestSearching::test_that_searching_with_empty_field_using_submit_returns_results \
+tests/desktop/consumer_pages/test_search::TestSearching::test_that_the_search_tag_is_present_in_the_search_results \
+tests/desktop/consumer_pages/test_search::TestSearching::test_that_checks_search_with_foreign_characters \
+tests/desktop/consumer_pages/test_search::TestSearching::test_results_page_items \
+2>&1 | tee $REPORTS_DIR/fireplaceTests_mv2_"$FireplaceGitTag".log
 }
 
 while getopts ":u:t:m:p:c:" i; do
