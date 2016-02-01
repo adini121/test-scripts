@@ -15,7 +15,6 @@ usage(){
         echo "  -m <BedrockInstance>    Eg Bedrock_mv1_first, Bedrock_mv1_second"
         echo "  -p <BedrockPort>        Eg 8088, 8089"
         echo "  -c <CommitHash>         Bedrock tests CommitHash"               
-
         exit 1
 }
 
@@ -129,7 +128,7 @@ runBedrocktests(){
 py.test -r=fsxXR --verbose --baseurl=http://134.96.235.47:$BedrockPort --host 134.96.235.159 \
 --port 1235 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 \
 --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --capability=email:test@testfabrik.com \
---capability=record:true --capability=extract:true --credentials=credentials.yaml \
+--capability=record:true --capability=extract:false \
 --platform=MAC --destructive \
 tests/test_about.py::TestAboutPage::test_footer_link_destinations_are_correct \
 tests/test_about.py::TestAboutPage::test_footer_links_are_valid \
