@@ -130,67 +130,67 @@ py.test -r=fsxXR --verbose --baseurl=http://134.96.235.47:$BedrockPort --host 13
 --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --capability=email:test@testfabrik.com \
 --capability=record:true --capability=extract:false \
 --platform=MAC --destructive \
-tests/test_about.py::TestAboutPage::test_footer_link_destinations_are_correct
-tests/test_about.py::TestAboutPage::test_footer_links_are_valid
-tests/test_about.py::TestAboutPage::test_tabzilla_link_destinations_are_correct
-tests/test_about.py::TestAboutPage::test_tabzilla_links_are_visible
-tests/test_about.py::TestAboutPage::test_navbar_links_are_visible
-tests/test_about.py::TestAboutPage::test_navbar_link_destinations_are_correct
-tests/test_about.py::TestAboutPage::test_navbar_link_urls_are_valid
-tests/test_about.py::TestAboutPage::test_major_link_destinations_are_correct
-tests/test_about.py::TestAboutPage::test_major_link_urls_are_valid
-tests/test_about.py::TestAboutPage::test_sign_up_form_is_visible
-tests/test_about.py::TestAboutPage::test_sign_up_form_fields_are_visible
-tests/test_about.py::TestAboutPage::test_sign_up_form_links_are_visible
-tests/test_about.py::TestAboutPage::test_sign_up_form_link_destinations_are_correct
-tests/test_about.py::TestAboutPage::test_sign_up_form_link_urls_are_valid
-tests/test_about.py::TestAboutPage::test_sign_up_form_elements_are_visible
-tests/test_about.py::TestAboutPage::test_sign_up_form_invalid_email
-tests/test_about.py::TestAboutPage::test_sign_up_form_privacy_policy_unchecked
-tests/test_contact.py::TestContact::test_spaces_links_are_correct
-tests/test_contact.py::TestContact::test_start_on_spaces
-tests/test_contact.py::TestContact::test_switching_tabs_list_display
-tests/test_contact.py::TestContact::test_region_links_are_correct
-tests/test_contribute.py::TestContribute::test_tabzilla_links_are_correct
-tests/test_contribute.py::TestContribute::test_major_link_destinations_are_correct
-tests/test_contribute.py::TestContribute::test_major_link_urls_are_valid
-tests/test_contribute.py::TestContribute::test_sign_up_form_fields_are_visible
-tests/test_contribute.py::TestContribute::test_sign_up_form_is_visible
-tests/test_home.py::TestHomePage::test_major_link_urls_are_valid
-tests/test_home.py::TestHomePage::test_major_link_destinations_are_correct
-tests/test_home.py::TestHomePage::test_footer_links_are_valid
-tests/test_home.py::TestHomePage::test_sign_up_form_is_visible
-tests/test_home.py::TestHomePage::test_sign_up_form_link_destinations_are_correct
-tests/test_home.py::TestHomePage::test_sign_up_form_link_urls_are_valid
-tests/test_mission.py::TestMission::test_major_link_destinations_are_correct
-tests/test_mission.py::TestMission::test_video_srcs_are_valid
-tests/test_mission.py::TestMission::test_tabzilla_links_are_correct
-tests/test_mozillabased.py::TestMozillaBasedPagePage::test_breadcrumbs_link_destinations_are_correct
-tests/test_mozillabased.py::TestMozillaBasedPagePage::test_breadcrumbs_link_urls_are_valid
-tests/test_mozillabased.py::TestMozillaBasedPagePage::test_main_feature_link_destinations_are_correct
-tests/test_mozillabased.py::TestMozillaBasedPagePage::test_featured_billboard_images_links_are_correct
-tests/test_mozillabased.py::TestMozillaBasedPagePage::test_featured_images_links_are_correct
-tests/test_mozillabased.py::TestMozillaBasedPagePage::test_tabzilla_links_are_correct
-tests/test_mozillabased.py::TestMozillaBasedPagePage::test_tabzilla_links_are_visible
-tests/test_mozillabased.py::TestMozillaBasedPagePage::test_navbar_links_are_visible
-tests/test_nightlyfirstrun.py::TestNightlyFirstRun::test_footer_links_are_valid
-tests/test_nightlyfirstrun.py::TestNightlyFirstRun::test_tabzilla_link_destinations_are_correct
-tests/test_nightlyfirstrun.py::TestNightlyFirstRun::test_tabzilla_links_are_visible
-tests/test_nightlyfirstrun.py::TestNightlyFirstRun::test_are_sections_visible
-tests/test_partners.py::TestPartners::test_overview_section_image
-tests/test_partners.py::TestPartners::test_os_section
-tests/test_partnerships.py::TestPartnerships::test_section_link_destinations_are_correct
-tests/test_partnerships.py::TestPartnerships::test_section_link_urls_are_valid
-tests/test_partnerships.py::TestPartnerships::test_image_srcs_are_correct
-tests/test_partnerships.py::TestPartnerships::test_partner_form_is_visible
-tests/test_privacy.py::TestPrivacy::test_tabzilla_links_are_correct
-tests/test_privacy.py::TestPrivacy::test_page_sections
-tests/test_projects.py::TestProjects::test_tabzilla_links_are_correct
-tests/test_projects.py::TestProjects::test_billboard_link_destinations_are_correct
-tests/test_projects.py::TestProjects::test_billboard_link_urls_are_valid
-tests/test_projects.py::TestProjects::test_projects_link_destinations_are_correct
-tests/test_sms.py::TestSMSPage::test_info_link_destinations_are_correct
-tests/test_sms.py::TestSMSPage::test_tabzilla_links_are_correct
+tests/test_about.py::TestAboutPage::test_footer_link_destinations_are_correct \
+tests/test_about.py::TestAboutPage::test_footer_links_are_valid \
+tests/test_about.py::TestAboutPage::test_tabzilla_link_destinations_are_correct \
+tests/test_about.py::TestAboutPage::test_tabzilla_links_are_visible \
+tests/test_about.py::TestAboutPage::test_navbar_links_are_visible \
+tests/test_about.py::TestAboutPage::test_navbar_link_destinations_are_correct \
+tests/test_about.py::TestAboutPage::test_navbar_link_urls_are_valid \
+tests/test_about.py::TestAboutPage::test_major_link_destinations_are_correct \
+tests/test_about.py::TestAboutPage::test_major_link_urls_are_valid \
+tests/test_about.py::TestAboutPage::test_sign_up_form_is_visible \
+tests/test_about.py::TestAboutPage::test_sign_up_form_fields_are_visible \
+tests/test_about.py::TestAboutPage::test_sign_up_form_links_are_visible \
+tests/test_about.py::TestAboutPage::test_sign_up_form_link_destinations_are_correct \
+tests/test_about.py::TestAboutPage::test_sign_up_form_link_urls_are_valid \
+tests/test_about.py::TestAboutPage::test_sign_up_form_elements_are_visible \
+tests/test_about.py::TestAboutPage::test_sign_up_form_invalid_email \
+tests/test_about.py::TestAboutPage::test_sign_up_form_privacy_policy_unchecked \
+tests/test_contact.py::TestContact::test_spaces_links_are_correct \
+tests/test_contact.py::TestContact::test_start_on_spaces \
+tests/test_contact.py::TestContact::test_switching_tabs_list_display \
+tests/test_contact.py::TestContact::test_region_links_are_correct \
+tests/test_contribute.py::TestContribute::test_tabzilla_links_are_correct \
+tests/test_contribute.py::TestContribute::test_major_link_destinations_are_correct \
+tests/test_contribute.py::TestContribute::test_major_link_urls_are_valid \
+tests/test_contribute.py::TestContribute::test_sign_up_form_fields_are_visible \
+tests/test_contribute.py::TestContribute::test_sign_up_form_is_visible \
+tests/test_home.py::TestHomePage::test_major_link_urls_are_valid \
+tests/test_home.py::TestHomePage::test_major_link_destinations_are_correct \
+tests/test_home.py::TestHomePage::test_footer_links_are_valid \
+tests/test_home.py::TestHomePage::test_sign_up_form_is_visible \
+tests/test_home.py::TestHomePage::test_sign_up_form_link_destinations_are_correct \
+tests/test_home.py::TestHomePage::test_sign_up_form_link_urls_are_valid \
+tests/test_mission.py::TestMission::test_major_link_destinations_are_correct \
+tests/test_mission.py::TestMission::test_video_srcs_are_valid \
+tests/test_mission.py::TestMission::test_tabzilla_links_are_correct \
+tests/test_mozillabased.py::TestMozillaBasedPagePage::test_breadcrumbs_link_destinations_are_correct \
+tests/test_mozillabased.py::TestMozillaBasedPagePage::test_breadcrumbs_link_urls_are_valid \
+tests/test_mozillabased.py::TestMozillaBasedPagePage::test_main_feature_link_destinations_are_correct \
+tests/test_mozillabased.py::TestMozillaBasedPagePage::test_featured_billboard_images_links_are_correct \
+tests/test_mozillabased.py::TestMozillaBasedPagePage::test_featured_images_links_are_correct \
+tests/test_mozillabased.py::TestMozillaBasedPagePage::test_tabzilla_links_are_correct \
+tests/test_mozillabased.py::TestMozillaBasedPagePage::test_tabzilla_links_are_visible \
+tests/test_mozillabased.py::TestMozillaBasedPagePage::test_navbar_links_are_visible \
+tests/test_nightlyfirstrun.py::TestNightlyFirstRun::test_footer_links_are_valid \
+tests/test_nightlyfirstrun.py::TestNightlyFirstRun::test_tabzilla_link_destinations_are_correct \
+tests/test_nightlyfirstrun.py::TestNightlyFirstRun::test_tabzilla_links_are_visible \
+tests/test_nightlyfirstrun.py::TestNightlyFirstRun::test_are_sections_visible \
+tests/test_partners.py::TestPartners::test_overview_section_image \
+tests/test_partners.py::TestPartners::test_os_section \
+tests/test_partnerships.py::TestPartnerships::test_section_link_destinations_are_correct \
+tests/test_partnerships.py::TestPartnerships::test_section_link_urls_are_valid \
+tests/test_partnerships.py::TestPartnerships::test_image_srcs_are_correct \
+tests/test_partnerships.py::TestPartnerships::test_partner_form_is_visible \
+tests/test_privacy.py::TestPrivacy::test_tabzilla_links_are_correct \
+tests/test_privacy.py::TestPrivacy::test_page_sections \
+tests/test_projects.py::TestProjects::test_tabzilla_links_are_correct \
+tests/test_projects.py::TestProjects::test_billboard_link_destinations_are_correct \
+tests/test_projects.py::TestProjects::test_billboard_link_urls_are_valid \
+tests/test_projects.py::TestProjects::test_projects_link_destinations_are_correct \
+tests/test_sms.py::TestSMSPage::test_info_link_destinations_are_correct \
+tests/test_sms.py::TestSMSPage::test_tabzilla_links_are_correct \
 2>&1 | tee $REPORTS_DIR/Phase2_BedrockTests_mv2_"$BedrockGitTag".log
 }
 
