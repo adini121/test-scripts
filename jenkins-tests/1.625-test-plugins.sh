@@ -12,7 +12,7 @@ echo "  -u <UID>                user name (e.g. adi)"
 echo "  -v <JenkinsVersion>     Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>        Tomcat startup port (e.g. 8082)"
 echo " 	-i <TestInstance>		Jenkins Test Repository Instance (e.g. first, second, third)	"
-echo "  -c <CommitHash>         Jenkins tests CommitHash"
+# echo "  -c <CommitHash>         Jenkins tests CommitHash"
 echo "  -d <JenkinsVersion>     Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
@@ -35,7 +35,7 @@ else
     git -C $JENKINS_Test_DIR clone git@github.com:adini121/acceptance-test-harness.git Jenkins_1.625_ath_$TestInstance
 fi
 
-git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout $CommitHash
+git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout 32691c19072968145e4ef43f691254efd01e2eb4
 git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance checkout -b infinity-cherry-pick-branch
 git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance cherry-pick 7348ab40ffb159c83982b18380c3d516cc99a507
 git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance cherry-pick 89a59d4bd2a22575690bde8f1f2d4e5cb6d9056d
@@ -44,8 +44,8 @@ git -C $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance cherry-pick 89a59d4bd2a
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
 REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Plugins"
-if [ ! -f $REPORTS_DIR/plugins_1.625_ath_reports_"$CommitHash"_"$JenkinsVersion".log ];then
-    	touch $REPORTS_DIR/plugins_1.625_ath_reports_"$CommitHash"_"$JenkinsVersion".log
+if [ ! -f $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log ];then
+    	touch $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
 fi
 if [ ! -f $REPORTS_DIR/plugins_1.625_ath_BrowserIdList_"$JenkinsVersion".log ];then
 		touch $REPORTS_DIR/plugins_1.625_ath_BrowserIdList_"$JenkinsVersion".log
@@ -56,8 +56,8 @@ DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
 EOF
 TestsDir="$JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance"
 sed -i 's|jenkins_core_sessionIDs|jenkins_plugins_sessionIDs|g' $TestsDir/utils/SeleniumGridConnection.java
-sed -i 's|\"record\", true|\"record\", true|g' $TestsDir/FallbackConfig.java
-sed -i 's|\"extract\", true|\"extract\", true|g' $TestsDir/FallbackConfig.java
+sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
+sed -i 's|\"extract\", false|\"extract\", true|g' $TestsDir/FallbackConfig.java
 sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
 sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/plugins_1.625_ath_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
 }
@@ -68,10 +68,11 @@ cd $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn \
 -Dmaven.test.skip=false -Dtest=BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
 CoberturaPluginTest,PlotPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
+NestedViewPluginTest,CompressArtifactsPluginTest,MultipleScmsPluginTest,\
 DashboardViewPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
 MailerPluginTest,ViolationsPluginTest,UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,\
-OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$CommitHash"_"$JenkinsVersion".log
+OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
 }
 
 # cleanup(){
@@ -86,7 +87,7 @@ OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$Com
 # echo "done"
 # }
 
-while getopts ":u:v:s:i:c:d:" i; do
+while getopts ":u:v:s:i:d:" i; do
     case "${i}" in
         u) user=${OPTARG}
         ;;
@@ -96,14 +97,12 @@ while getopts ":u:v:s:i:c:d:" i; do
         ;;
         i) TestInstance=${OPTARG}
         ;;
-        c) CommitHash=${OPTARG}
-        ;;
         d) DatabaseSessionIDsVersion=${OPTARG}
     esac
 done
 shift $((OPTIND - 1))
 
-if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $CommitHash == "" || $DatabaseSessionIDsVersion == "" ]]; then
+if [[ $user == "" || $JenkinsVersion == "" || $startupPort == "" || $TestInstance == "" || $DatabaseSessionIDsVersion == "" ]]; then
         usage
 fi
 
