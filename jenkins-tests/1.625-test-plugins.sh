@@ -68,10 +68,10 @@ cd $JENKINS_Test_DIR/Jenkins_1.625_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn \
 -Dmaven.test.skip=false -Dtest=BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
 CoberturaPluginTest,PlotPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
-NestedViewPluginTest,CompressArtifactsPluginTest,MultipleScmsPluginTest,\
+NestedViewPluginTest,CompressArtifactsPluginTest,\
 DashboardViewPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
-MailerPluginTest,ViolationsPluginTest,UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,\
+MailerPluginTest,ViolationsPluginTest,UpstreamDownstreamColumnPluginTest,\
 OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.625_ath_reports_"$JenkinsVersion".log
 }
 
