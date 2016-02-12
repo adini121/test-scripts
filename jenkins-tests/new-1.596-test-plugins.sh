@@ -58,6 +58,7 @@ TestsDir="$JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/je
 sed -i 's|jenkins_core_sessionIDs|jenkins_plugins_sessionIDs|g' $TestsDir/utils/SeleniumGridConnection.java
 sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
 sed -i 's|\"extract\", false|\"extract\", true|g' $TestsDir/FallbackConfig.java
+sed -i 's|FIREFOX_30_WINDOWS_8_64|PHANTOMJS_198_MACOS_10.11_64|g' $TestsDir/FallbackConfig.java
 sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
 sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/plugins_1.596_ath_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
 }
@@ -68,10 +69,10 @@ cd $JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn \
 -Dmaven.test.skip=false -Dtest=BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
 CoberturaPluginTest,PlotPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
-NestedViewPluginTest,CompressArtifactsPluginTest,MultipleScmsPluginTest,\
+NestedViewPluginTest,CompressArtifactsPluginTest,\
 DashboardViewPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\
-MailerPluginTest,ViolationsPluginTest,UpstreamDownstreamColumnPluginTest,DescriptionSetterPluginTest,\
+MailerPluginTest,ViolationsPluginTest,UpstreamDownstreamColumnPluginTest,\
 OwnershipPluginTest test 2>&1 | tee $REPORTS_DIR/plugins_1.596_ath_reports_"$JenkinsVersion".log
 }
 
