@@ -11,7 +11,7 @@ echo "  -u <UID>                            user name (e.g. adi)"
 echo "  -v <JenkinsVersion>                 Jenkins version - Git Tag (e.g. 1.600, 1.615)"
 echo "  -s <startupPort>                    Tomcat startup port (e.g. 8082)"
 echo " 	-i <TestInstance>		            Jenkins Test Repository Instance (e.g. first, second, third)	"
-echo "  -d <JenkinsSessionIDsVersion>       DUMMIE PARAMETER Database SessionIDs Version (e.g. 1_600, 1_615)"
+echo "  -d <JenkinsSessionIDsVersion>       Database SessionIDs Version (e.g. 1_600, 1_615)"
 exit 1
 }
 
@@ -26,45 +26,44 @@ if [ ! -d $JENKINS_Test_DIR ]; then
 	echo 'created Jenkins Test directory'
 fi 
 
-if [ ! -d $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance ]; then
-    git -C $JENKINS_Test_DIR clone -b 1.580-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.580_ath_$TestInstance
+if [ ! -d $JENKINS_Test_DIR/Jenkins_1.580_Cucumber_ath_$TestInstance ]; then
+    git -C $JENKINS_Test_DIR clone -b 1.580-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.580_Cucumber_ath_$TestInstance
 else
-    rm -rf $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance
-    git -C $JENKINS_Test_DIR clone -b 1.580-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.580_ath_$TestInstance
+    rm -rf $JENKINS_Test_DIR/Jenkins_1.580_Cucumber_ath_$TestInstance
+    git -C $JENKINS_Test_DIR clone -b 1.580-ath --single-branch git@github.com:adini121/acceptance-test-harness.git Jenkins_1.580_Cucumber_ath_$TestInstance
 fi
-
 }
 
 gatherTestReports(){
 currentTime=$(date "+%Y.%m.%d-%H.%M")
-REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Jenkins_Temp"
-if [ ! -f $REPORTS_DIR/"$currentTime"_Cucumber_1.580_ath_reports_"$JenkinsVersion".log ];then
-    	touch $REPORTS_DIR/"$currentTime"_Cucumber_1.580_ath_reports_"$JenkinsVersion".log
+REPORTS_DIR="/home/nisal/Dropbox/TestResults/Jenkins/Cucumber"
+if [ ! -f $REPORTS_DIR/Cucumber_1.580_ath_reports_"$JenkinsVersion".log ];then
+    	touch $REPORTS_DIR/Cucumber_1.580_ath_reports_"$JenkinsVersion".log
 fi
 
-# if [ ! -f $REPORTS_DIR/"$currentTime"_Cucumber_1.580_BrowserIdList_"$JenkinsVersion".log ];then
-# 		touch $REPORTS_DIR/"$currentTime"_Cucumber_1.580_BrowserIdList_"$JenkinsVersion".log
-# fi
-# mysql -u root << EOF
-# use jenkins_Cucumber_sessionIDs;
-# DROP TABLE IF EXISTS sessionids_$DatabaseSessionIDsVersion;
-# EOF
-TestsDir=$JENKINS_Test_DIR/Jenkins_1.596_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance
-sed -i 's|\"record\", true|\"record\", false|g' $TestsDir/FallbackConfig.java
-sed -i 's|\"extract\", true|\"extract\", false|g' $TestsDir/FallbackConfig.java
-# gridConfigFile="$JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java"
-# sed -i 's|jenkins_core_sessionIDs|jenkins_Cucumber_sessionIDs|g' $gridConfigFile
-# sed -i 's|test_session_ids|sessionids_'$DatabaseSessionIDsVersion'|g' $gridConfigFile
-# sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/'$currentTime'_Cucumber_1.580_BrowserIdList_'$JenkinsVersion'.log", true);|g' $gridConfigFile
+if [ ! -f $REPORTS_DIR/Cucumber_1.580_BrowserIdList_"$JenkinsVersion".log ];then
+		touch $REPORTS_DIR/Cucumber_1.580_BrowserIdList_"$JenkinsVersion".log
+fi
+mysql -u root << EOF
+use jenkins_Cucumber_sessionIDs;
+DROP TABLE IF EXISTS sessionids_cucumber_$DatabaseSessionIDsVersion;
+EOF
+TestsDir=$JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance
+sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
+sed -i 's|\"extract\", false|\"extract\", true|g' $TestsDir/FallbackConfig.java
+gridConfigFile="$JENKINS_Test_DIR/Jenkins_1.580_Cucumber_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java"
+sed -i 's|jenkins_core_sessionIDs|jenkins_Cucumber_sessionIDs|g' $gridConfigFile
+sed -i 's|test_session_ids|sessionids_cucumber_'$DatabaseSessionIDsVersion'|g' $gridConfigFile
+sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/Cucumber_1.580_BrowserIdList_'$JenkinsVersion'.log", true);|g' $gridConfigFile
 
 }
 
 
 runJenkinsTests(){
 echo "..............................................run Jenkins Tests.............................................."
-cd $JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance
+cd $JENKINS_Test_DIR/Jenkins_1.580_Cucumber_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ \
-mvn -Dcucumber.test=features/ test 2>&1 | tee $REPORTS_DIR/"$currentTime"_Cucumber_1.580_ath_reports_"$JenkinsVersion".log
+mvn -Dcucumber.test=features/ test 2>&1 | tee $REPORTS_DIR/Cucumber_1.580_ath_reports_"$JenkinsVersion".log
 }
 
 # cleanup(){
