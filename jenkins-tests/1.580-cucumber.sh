@@ -45,14 +45,14 @@ if [ ! -f $REPORTS_DIR/Cucumber_1.580_BrowserIdList_"$JenkinsVersion".log ];then
 		touch $REPORTS_DIR/Cucumber_1.580_BrowserIdList_"$JenkinsVersion".log
 fi
 mysql -u root << EOF
-use jenkins_Cucumber_sessionIDs;
+use jenkins_cucumber_sessionIDs;
 DROP TABLE IF EXISTS sessionids_cucumber_$DatabaseSessionIDsVersion;
 EOF
 TestsDir=$JENKINS_Test_DIR/Jenkins_1.580_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance
 sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
 sed -i 's|\"extract\", false|\"extract\", true|g' $TestsDir/FallbackConfig.java
 gridConfigFile="$JENKINS_Test_DIR/Jenkins_1.580_Cucumber_ath_$TestInstance/src/main/java/org/jenkinsci/test/acceptance/utils/SeleniumGridConnection.java"
-sed -i 's|jenkins_core_sessionIDs|jenkins_Cucumber_sessionIDs|g' $gridConfigFile
+sed -i 's|jenkins_core_sessionIDs|jenkins_cucumber_sessionIDs|g' $gridConfigFile
 sed -i 's|test_session_ids|sessionids_cucumber_'$DatabaseSessionIDsVersion'|g' $gridConfigFile
 sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/Cucumber_1.580_BrowserIdList_'$JenkinsVersion'.log", true);|g' $gridConfigFile
 
