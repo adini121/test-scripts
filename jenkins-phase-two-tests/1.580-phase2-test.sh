@@ -104,7 +104,7 @@ runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_phase2_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn \
--Dmaven.test.skip=false -Dtest=CreateSlaveTest,ArtifactsTest,ViewTest,ScriptTest,MatrixTest,CredentialsTest,InternalUsersTest test 2>&1 | tee $REPORTS_DIR/Core_phase2_ath_reports_"$JenkinsVersion".log
+-Dmaven.test.skip=false -Dtest=CreateSlaveTest,JdkTest,BuildHistoryTest,CopyJobTest,ArtifactsTest,ViewTest,ScriptTest,MatrixTest,CredentialsTest,InternalUsersTest test 2>&1 | tee $REPORTS_DIR/Core_phase2_ath_reports_"$JenkinsVersion".log
 }
 
 cleanup(){
@@ -121,6 +121,9 @@ rm -rf $(ls -la | grep -E '*nisal*.*tool*' | awk '{print $9}')
 rm -rf tmp*
 kill $(ps aux | grep -E 'nisal.*java -jar /tmp*' | awk '{print $2}')
 kill $(ps aux | grep -E 'nisal.*slave*' | awk '{print $2}')
+curl --url "smtps://smtp.gmail.com:465" --ssl-reqd --mail-from "adamsken1221@gmail.com" \
+--mail-rcpt "adityanisal@googlemail.com" --upload-file /home/nisal/email-jenkins-8002-done.txt --user \
+"adamsken1221@gmail.com:adsad1221" --insecure
 echo "done"
 }
 
