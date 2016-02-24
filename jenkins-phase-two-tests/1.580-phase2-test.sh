@@ -104,7 +104,12 @@ runJenkinsTests(){
 echo "..............................................runJenkinsTests.............................................."
 cd $JENKINS_Test_DIR/Jenkins_phase2_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn \
--Dmaven.test.skip=false -Dtest=CreateSlaveTest,JdkTest,BuildHistoryTest,CopyJobTest,ArtifactsTest,ViewTest,ScriptTest,MatrixTest,CredentialsTest,InternalUsersTest test 2>&1 | tee $REPORTS_DIR/Core_phase2_ath_reports_"$JenkinsVersion".log
+-Dmaven.test.skip=false -Dtest=CreateSlaveTest,JdkTest,BuildHistoryTest,CopyJobTest,ArtifactsTest,ViewTest,ScriptTest,MatrixTest,CredentialsTest,InternalUsersTest,\
+BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
+CoberturaPluginTest,PlotPluginTest,NestedViewPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
+DashboardViewPluginTest,JobConfigHistoryPluginTest,ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
+EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,\
+SubversionPluginNoDockerTest test 2>&1 | tee $REPORTS_DIR/Core_phase2_ath_reports_"$JenkinsVersion".log
 }
 
 cleanup(){
