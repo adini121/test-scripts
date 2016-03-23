@@ -95,7 +95,7 @@ sed -i 's|jenkins_core_sessionIDs|phase_two_jenkins_Core_sids|g' $TestsDir/utils
 sed -i 's|\"record\", false|\"record\", true|g' $TestsDir/FallbackConfig.java
 sed -i 's|\"extract\", false|\"extract\", false|g' $TestsDir/FallbackConfig.java
 sed -i 's|\"extract\", true|\"extract\", false|g' $TestsDir/FallbackConfig.java
-# sed -i 's|FIREFOX_30_WINDOWS_8_64|PHANTOMJS_198_MACOS_10.11_64|g' $TestsDir/FallbackConfig.java
+#sed -i 's|FIREFOX_30_WINDOWS_8_64|PHANTOMJS_198_MACOS_10.11_64|g' $TestsDir/FallbackConfig.java
 sed -i 's|test_session_ids|sessionids_phase2_'$DatabaseSessionIDsVersion'|g' $TestsDir/utils/SeleniumGridConnection.java
 sed -i 's|.*FileWriter fileWriter.*|            FileWriter fileWriter = new FileWriter("'$REPORTS_DIR'/Core_phase2_ath_BrowserIdList_'$JenkinsVersion'.log", true);|g' $TestsDir/utils/SeleniumGridConnection.java
 }
@@ -105,8 +105,8 @@ echo "..............................................runJenkinsTests.............
 cd $JENKINS_Test_DIR/Jenkins_phase2_ath_$TestInstance
 TYPE=existing BROWSER=seleniumGrid JENKINS_URL=http://134.96.235.47:$startupPort/jenkins$JenkinsVersion/ mvn \
 -Dmaven.test.skip=false -Dtest=CreateSlaveTest,ViewTest,SlaveTest,\
-CopyJobTest,JUnitTestPublisherTest,ArtifactsTest,UninstallPluginTest,CredentialsTest,InternalUsersTest,\
-JdkTest,ArtifactsTest,BuildHistoryTest,BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
+CopyJobTest,JUnitTestPublisherTest,UninstallPluginTest,CredentialsTest,InternalUsersTest,\
+JdkTest,BuildHistoryTest,BuildTimeoutPluginTest,JobParameterSummaryPluginTest,HtmlPublisherPluginTest,MailWatcherPluginTest,\
 CoberturaPluginTest,PlotPluginTest,MultipleScmsPluginTest,JavadocPluginTest,DescriptionSetterPluginTest,\
 ProjectDescriptionSetterPluginTest,BatchTaskPluginTest,WsCleanupPluginTest,\
 EnvInjectPluginTest,PostBuildScriptPluginTest,MatrixReloadedPluginTest,SubversionPluginNoDockerTest,\

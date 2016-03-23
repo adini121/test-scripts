@@ -67,7 +67,7 @@ sleep 2
 
 runBedrocktests(){
 	#export DISPLAY=:0.0
-	py.test -r=fsxXR --verbose --baseurl=http://134.96.235.47:$BedrockPort --host 134.96.235.159 --port 1235 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --capability=email:test@testfabrik.com --capability=record:true --capability=extract:true --credentials=credentials.yaml --platform=MAC --destructive tests/. 2>&1 | tee $REPORTS_DIR/"$currentTime"_BedrockTests_mv2_"$BedrockGitTag".log
+	py.test -r=fsxXR --verbose --baseurl=http://134.96.235.47:$BedrockPort --host 134.96.235.159 --port 1235 --browsername=firefox --capability=browser:FIREFOX_30_WINDOWS_8_64 --capability=apikey:c717c5b3-a307-461e-84ea-1232d44cde89 --capability=email:test@testfabrik.com --capability=record:true --capability=extract:true --platform=MAC --destructive tests/. 2>&1 | tee $REPORTS_DIR/"$currentTime"_BedrockTests_mv2_"$BedrockGitTag".log
 }
 
 

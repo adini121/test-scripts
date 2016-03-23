@@ -127,7 +127,7 @@ tests/desktop/consumer_pages/test_details_page.py::TestDetailsPage::test_that_re
 tests/desktop/consumer_pages/test_search.py::TestSearching::test_that_searching_with_empty_field_using_submit_returns_results \
 tests/desktop/consumer_pages/test_search.py::TestSearching::test_that_the_search_tag_is_present_in_the_search_results \
 tests/desktop/consumer_pages/test_search.py::TestSearching::test_that_checks_search_with_foreign_characters \
-2>&1 | tee $REPORTS_DIR/FireplaceTests_mv1_"$FireplaceGitTag".log
+2>&1 | tee $REPORTS_DIR/fireplaceTests_mv1_"$FireplaceGitTag".log
 }
 
 while getopts ":u:t:m:p:c:" i; do
